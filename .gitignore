@@ -1,0 +1,12 @@
+# Debug release
+Debug/
+Release/
+
+# VS stuff
+*.db
+*.opendb
+*.sdf
+.vs/
+
+# Mac OS stuff
+.DS_Store
