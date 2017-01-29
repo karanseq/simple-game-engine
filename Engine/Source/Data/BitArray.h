@@ -14,19 +14,19 @@ namespace data {
 	class BitArray
 	{
 	private:
-		BitArray(size_t num_bits, void* memory, bool start_set = false);
+		explicit BitArray(size_t i_num_bits, void* i_memory, bool i_start_set = false);
 
 		// disable copy constructor & copy assignment operator
-		BitArray(const BitArray& copy);
-		inline BitArray& operator=(const BitArray& bit_array);
+		BitArray(const BitArray& i_copy) = delete;
+		inline BitArray& operator=(const BitArray& i_bit_array) = delete;
 
 	public:
-		static BitArray* Create(size_t num_bits, void* memory, bool start_set = false);
+		static BitArray* Create(size_t i_num_bits, void* i_memory, bool i_start_set = false);
 		~BitArray();
 		
-		BitArray(BitArray&& copy);
+		BitArray(BitArray&& i_copy);
 
-		inline BitArray& operator=(BitArray&& bit_array);
+		inline BitArray& operator=(BitArray&& i_bit_array);
 
 		inline void ClearAll();
 		inline void SetAll();
@@ -35,20 +35,20 @@ namespace data {
 		bool AreAllClear() const;
 		bool AreAllSet() const;
 
-		inline bool IsBitSet(size_t bit_index) const;
-		inline bool IsBitClear(size_t bit_index) const;
+		inline bool IsBitSet(size_t i_bit_index) const;
+		inline bool IsBitClear(size_t i_bit_index) const;
 
-		void SetBit(size_t bit_index);
-		void ClearBit(size_t bit_index);
-		void ToggleBit(size_t bit_index);
+		void SetBit(size_t i_bit_index);
+		void ClearBit(size_t i_bit_index);
+		void ToggleBit(size_t i_bit_index);
 
-		bool GetFirstSetBit(size_t &bit_index) const;
-		bool GetFirstClearBit(size_t &bit_index) const;
+		bool GetFirstSetBit(size_t &o_bit_index) const;
+		bool GetFirstClearBit(size_t &o_bit_index) const;
 
-		inline bool Get(size_t bit_index) const;
+		inline bool Get(size_t i_bit_index) const;
 		inline size_t Size() const;
 
-		static inline size_t GetRequiredMemorySize(size_t num_bits);
+		static inline size_t GetRequiredMemorySize(size_t i_num_bits);
 
 	private:
 		size_t*											buckets_;

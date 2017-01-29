@@ -6,192 +6,192 @@
 #include "Memory\BlockAllocator.h"
 #include "Memory\FixedSizeAllocator.h"
 
-//_Check_return_ _Ret_maybenull_ _Post_writable_byte_size_(size)
+//_Check_return_ _Ret_maybenull_ _Post_writable_byte_size_(i_size)
 ///*_ACRTIMP*/ _CRTALLOCATOR _CRT_JIT_INTRINSIC _CRTRESTRICT
-//void* __cdecl malloc(_In_ _CRT_GUARDOVERFLOW size_t size)
+//void* __cdecl malloc(_In_ _CRT_GUARDOVERFLOW size_t i_size)
 //{
-//	return engine::memory::DoAlloc(size, __FUNCTION__);
+//	return engine::memory::DoAlloc(i_size, __FUNCTION__);
 //}
 //
 ///*_ACRTIMP*/
-//void __cdecl free(_Pre_maybenull_ _Post_invalid_ void* pointer)
+//void __cdecl free(_Pre_maybenull_ _Post_invalid_ void* i_pointer)
 //{
-//	engine::memory::DoFree(pointer, __FUNCTION__);
+//	engine::memory::DoFree(i_pointer, __FUNCTION__);
 //}
 
-void* operator new(size_t size)
+void* operator new(size_t i_size)
 {
-	return engine::memory::DoAlloc(size, __FUNCTION__);
+	return engine::memory::DoAlloc(i_size, __FUNCTION__);
 }
 
-void operator delete(void* pointer)
+void operator delete(void* i_pointer)
 {
-	engine::memory::DoFree(pointer, __FUNCTION__);
+	engine::memory::DoFree(i_pointer, __FUNCTION__);
 }
 
-void* operator new[](size_t size)
+void* operator new[](size_t i_size)
 {
-	return engine::memory::DoAlloc(size, __FUNCTION__);
+	return engine::memory::DoAlloc(i_size, __FUNCTION__);
 }
 
-void operator delete[](void* pointer)
+void operator delete[](void* i_pointer)
 {
-	engine::memory::DoFree(pointer, __FUNCTION__);
+	engine::memory::DoFree(i_pointer, __FUNCTION__);
 }
 
-void* operator new(size_t size, engine::memory::AlignmentType alignment)
+void* operator new(size_t i_size, engine::memory::AlignmentType i_alignment)
 {
 	engine::memory::BlockAllocator* default_allocator = engine::memory::BlockAllocator::GetDefaultAllocator();
 	ASSERT(default_allocator);
-	void* pointer = default_allocator->Alloc(size, alignment);
+	void* pointer = default_allocator->Alloc(i_size, i_alignment);
 	ASSERT(pointer);
 #ifdef BUILD_DEBUG
-	VERBOSE("Called %s(size = %zu, alignemnt = %d) on the default allocator", __FUNCTION__, size, alignment);
+	VERBOSE("Called %s(i_size = %zu, alignemnt = %d) on the default allocator", __FUNCTION__, i_size, i_alignment);
 #endif
 	return pointer;
 }
 
-void operator delete(void* pointer, engine::memory::AlignmentType alignment)
+void operator delete(void* i_pointer, engine::memory::AlignmentType i_alignment)
 {
-	ASSERT(pointer);
+	ASSERT(i_pointer);
 	engine::memory::BlockAllocator* default_allocator = engine::memory::BlockAllocator::GetDefaultAllocator();
 	ASSERT(default_allocator);
-	default_allocator->Free(pointer);
+	default_allocator->Free(i_pointer);
 #ifdef BUILD_DEBUG
-	VERBOSE("Called %s(pointer = %p, alignemnt = %d) on the default allocator", __FUNCTION__, pointer, alignment);
+	VERBOSE("Called %s(i_pointer = %p, alignemnt = %d) on the default allocator", __FUNCTION__, i_pointer, i_alignment);
 #endif
 }
 
-void* operator new(size_t size, engine::memory::BlockAllocator* allocator)
+void* operator new(size_t i_size, engine::memory::BlockAllocator* i_allocator)
 {
-	ASSERT(allocator);
-	void* pointer = allocator->Alloc(size);
+	ASSERT(i_allocator);
+	void* pointer = i_allocator->Alloc(i_size);
 	ASSERT(pointer);
 #ifdef BUILD_DEBUG
-	VERBOSE("Called %s(size = %zu, allocator = %p) on BlockAllocator-%d", __FUNCTION__, size, allocator, allocator->GetID());
-#endif
-	return pointer;
-}
-
-void operator delete(void* pointer, engine::memory::BlockAllocator* allocator)
-{
-	ASSERT(pointer);
-	ASSERT(allocator);
-	allocator->Free(pointer);
-#ifdef BUILD_DEBUG
-	VERBOSE("Called %s(pointer = %p, allocator = %p) on BlockAllocator-%d", __FUNCTION__, pointer, allocator, allocator->GetID());
-#endif
-}
-
-void* operator new[](size_t size, engine::memory::BlockAllocator* allocator)
-{
-	ASSERT(allocator);
-	void* pointer = allocator->Alloc(size);
-	ASSERT(pointer);
-#ifdef BUILD_DEBUG
-	VERBOSE("Called %s(size = %zu, allocator = %p) on BlockAllocator-%d", __FUNCTION__, size, allocator, allocator->GetID());
+	VERBOSE("Called %s(i_size = %zu, i_allocator = %p) on BlockAllocator-%d", __FUNCTION__, i_size, i_allocator, i_allocator->GetID());
 #endif
 	return pointer;
 }
 
-void operator delete[](void* pointer, engine::memory::BlockAllocator* allocator)
+void operator delete(void* i_pointer, engine::memory::BlockAllocator* i_allocator)
 {
-	ASSERT(pointer);
-	ASSERT(allocator);
-	allocator->Free(pointer);
+	ASSERT(i_pointer);
+	ASSERT(i_allocator);
+	i_allocator->Free(i_pointer);
 #ifdef BUILD_DEBUG
-	VERBOSE("Called %s(pointer = %p, allocator = %p) on BlockAllocator-%d", __FUNCTION__, pointer, allocator, allocator->GetID());
+	VERBOSE("Called %s(i_pointer = %p, i_allocator = %p) on BlockAllocator-%d", __FUNCTION__, i_pointer, i_allocator, i_allocator->GetID());
 #endif
 }
 
-void* operator new(size_t size, engine::memory::FixedSizeAllocator* allocator)
+void* operator new[](size_t i_size, engine::memory::BlockAllocator* i_allocator)
 {
-	ASSERT(allocator);
-	void* pointer = allocator->Alloc(size);
+	ASSERT(i_allocator);
+	void* pointer = i_allocator->Alloc(i_size);
 	ASSERT(pointer);
 #ifdef BUILD_DEBUG
-	VERBOSE("Called %s(size = %zu, allocator = %p) on FixedSizeAllocator-%d with fixed_block_size:%zu", __FUNCTION__, size, allocator, allocator->GetID(), allocator->GetBlockSize());
-#endif
-	return pointer;
-}
-
-void operator delete(void* pointer, engine::memory::FixedSizeAllocator* allocator)
-{
-	ASSERT(pointer);
-	ASSERT(allocator);
-	allocator->Free(pointer);
-#ifdef BUILD_DEBUG
-	VERBOSE("Called %s(pointer = %p, allocator = %p) on FixedSizeAllocator-%d with fixed_block_size:%zu", __FUNCTION__, pointer, allocator, allocator->GetID(), allocator->GetBlockSize());
-#endif
-}
-
-void* operator new[](size_t size, engine::memory::FixedSizeAllocator* allocator)
-{
-	ASSERT(allocator);
-	void* pointer = allocator->Alloc(size);
-	ASSERT(pointer);
-#ifdef BUILD_DEBUG
-	VERBOSE("Called %s(size = %zu, allocator = %p) on FixedSizeAllocator-%d with fixed_block_size:%zu", __FUNCTION__, size, allocator, allocator->GetID(), allocator->GetBlockSize());
+	VERBOSE("Called %s(i_size = %zu, i_allocator = %p) on BlockAllocator-%d", __FUNCTION__, i_size, i_allocator, i_allocator->GetID());
 #endif
 	return pointer;
 }
 
-void operator delete[](void* pointer, engine::memory::FixedSizeAllocator* allocator)
+void operator delete[](void* i_pointer, engine::memory::BlockAllocator* i_allocator)
 {
-	ASSERT(pointer);
-	ASSERT(allocator);
-	allocator->Free(pointer);
+	ASSERT(i_pointer);
+	ASSERT(i_allocator);
+	i_allocator->Free(i_pointer);
 #ifdef BUILD_DEBUG
-	VERBOSE("Called %s(pointer = %p, allocator = %p) on FixedSizeAllocator-%d with fixed_block_size:%zu", __FUNCTION__, pointer, allocator, allocator->GetID(), allocator->GetBlockSize());
+	VERBOSE("Called %s(i_pointer = %p, i_allocator = %p) on BlockAllocator-%d", __FUNCTION__, i_pointer, i_allocator, i_allocator->GetID());
 #endif
 }
 
-void* operator new(size_t size, engine::memory::BlockAllocator* allocator, engine::memory::AlignmentType alignment)
+void* operator new(size_t i_size, engine::memory::FixedSizeAllocator* i_allocator)
 {
-	ASSERT(allocator);
-	void* pointer = allocator->Alloc(size, alignment);
+	ASSERT(i_allocator);
+	void* pointer = i_allocator->Alloc(i_size);
 	ASSERT(pointer);
 #ifdef BUILD_DEBUG
-	VERBOSE("Called %s(size = %zu, allocator = %p, alignment = %d) on allocator-%d", __FUNCTION__, size, allocator, alignment, allocator->GetID());
+	VERBOSE("Called %s(i_size = %zu, i_allocator = %p) on FixedSizeAllocator-%d with fixed_block_size:%zu", __FUNCTION__, i_size, i_allocator, i_allocator->GetID(), i_allocator->GetBlockSize());
 #endif
 	return pointer;
 }
 
-void operator delete(void* pointer, engine::memory::BlockAllocator* allocator, engine::memory::AlignmentType alignment)
+void operator delete(void* i_pointer, engine::memory::FixedSizeAllocator* i_allocator)
 {
-	ASSERT(pointer);
-	ASSERT(allocator);
-	allocator->Free(pointer);
+	ASSERT(i_pointer);
+	ASSERT(i_allocator);
+	i_allocator->Free(i_pointer);
 #ifdef BUILD_DEBUG
-	VERBOSE("Called %s(pointer = %p, allocator = %p, alignment = %d) on allocator-%d", __FUNCTION__, pointer, allocator, alignment, allocator->GetID());
+	VERBOSE("Called %s(i_pointer = %p, i_allocator = %p) on FixedSizeAllocator-%d with fixed_block_size:%zu", __FUNCTION__, i_pointer, i_allocator, i_allocator->GetID(), i_allocator->GetBlockSize());
+#endif
+}
+
+void* operator new[](size_t i_size, engine::memory::FixedSizeAllocator* i_allocator)
+{
+	ASSERT(i_allocator);
+	void* pointer = i_allocator->Alloc(i_size);
+	ASSERT(pointer);
+#ifdef BUILD_DEBUG
+	VERBOSE("Called %s(i_size = %zu, i_allocator = %p) on FixedSizeAllocator-%d with fixed_block_size:%zu", __FUNCTION__, i_size, i_allocator, i_allocator->GetID(), i_allocator->GetBlockSize());
+#endif
+	return pointer;
+}
+
+void operator delete[](void* i_pointer, engine::memory::FixedSizeAllocator* i_allocator)
+{
+	ASSERT(i_pointer);
+	ASSERT(i_allocator);
+	i_allocator->Free(i_pointer);
+#ifdef BUILD_DEBUG
+	VERBOSE("Called %s(i_pointer = %p, i_allocator = %p) on FixedSizeAllocator-%d with fixed_block_size:%zu", __FUNCTION__, i_pointer, i_allocator, i_allocator->GetID(), i_allocator->GetBlockSize());
+#endif
+}
+
+void* operator new(size_t i_size, engine::memory::BlockAllocator* i_allocator, engine::memory::AlignmentType i_alignment)
+{
+	ASSERT(i_allocator);
+	void* pointer = i_allocator->Alloc(i_size, i_alignment);
+	ASSERT(pointer);
+#ifdef BUILD_DEBUG
+	VERBOSE("Called %s(i_size = %zu, i_allocator = %p, i_alignment = %d) on i_allocator-%d", __FUNCTION__, i_size, i_allocator, i_alignment, i_allocator->GetID());
+#endif
+	return pointer;
+}
+
+void operator delete(void* i_pointer, engine::memory::BlockAllocator* i_allocator, engine::memory::AlignmentType i_alignment)
+{
+	ASSERT(i_pointer);
+	ASSERT(i_allocator);
+	i_allocator->Free(i_pointer);
+#ifdef BUILD_DEBUG
+	VERBOSE("Called %s(i_pointer = %p, i_allocator = %p, i_alignment = %d) on i_allocator-%d", __FUNCTION__, i_pointer, i_allocator, i_alignment, i_allocator->GetID());
 #endif
 }
 
 #ifdef BUILD_DEBUG
 #define TRACK_NEW (__FILE__, __LINE__)
-void* operator new(size_t size, const char* file_name, unsigned int line)
+void* operator new(size_t i_size, const char* i_file_name, unsigned int i_line)
 {
 	engine::memory::BlockAllocator* default_allocator = engine::memory::BlockAllocator::GetDefaultAllocator();
 	ASSERT(default_allocator);
-	void* pointer = default_allocator->Alloc(size);
+	void* pointer = default_allocator->Alloc(i_size);
 	ASSERT(pointer);
-	VERBOSE("Called %s(size = %zu, file_name = %s, line = %d) on allocator-%d", __FUNCTION__, size, file_name, line, default_allocator->GetID());
+	VERBOSE("Called %s(i_size = %zu, i_file_name = %s, i_line = %d) on i_allocator-%d", __FUNCTION__, i_size, i_file_name, i_line, default_allocator->GetID());
 	return pointer;
 }
 
-void operator delete(void* pointer, const char* file_name, unsigned int line)
+void operator delete(void* i_pointer, const char* i_file_name, unsigned int i_line)
 {
 	engine::memory::BlockAllocator* default_allocator = engine::memory::BlockAllocator::GetDefaultAllocator();
 	ASSERT(default_allocator);
-	default_allocator->Free(pointer);
-	VERBOSE("Called %s(pointer = %p, file_name = %s, line = %d) on allocator-%d", __FUNCTION__, pointer, file_name, line, default_allocator->GetID());
+	default_allocator->Free(i_pointer);
+	VERBOSE("Called %s(i_pointer = %p, i_file_name = %s, i_line = %d) on i_allocator-%d", __FUNCTION__, i_pointer, i_file_name, i_line, default_allocator->GetID());
 }
 #endif
 
 namespace engine {
 namespace memory {
 
-	void* DoAlloc(size_t size, const char* function_name)
+	void* DoAlloc(size_t i_size, const char* i_function_name)
 	{
 		void* pointer = nullptr;
 
@@ -200,13 +200,13 @@ namespace memory {
 		for (uint8_t i = 0; i < MAX_FIXED_SIZE_ALLOCATORS; ++i)
 		{
 			// if the FSA exists and is big enough to service this request
-			if (available_fsas[i] && available_fsas[i]->GetBlockSize() >= size)
+			if (available_fsas[i] && available_fsas[i]->GetBlockSize() >= i_size)
 			{
-				pointer = available_fsas[i]->Alloc(size);
+				pointer = available_fsas[i]->Alloc(i_size);
 				if (pointer)
 				{
 	#ifdef BUILD_DEBUG
-					VERBOSE("Called %s(size = %zu) on FixedSizeAllocator-%d with fixed_block_size:%zu", function_name, size, available_fsas[i]->GetID(), available_fsas[i]->GetBlockSize());
+					VERBOSE("Called %s(i_size = %zu) on FixedSizeAllocator-%d with fixed_block_size:%zu", i_function_name, i_size, available_fsas[i]->GetID(), available_fsas[i]->GetBlockSize());
 	#endif
 					return pointer;
 				}
@@ -219,19 +219,19 @@ namespace memory {
 		engine::memory::BlockAllocator* default_allocator = engine::memory::BlockAllocator::GetDefaultAllocator();
 		ASSERT(default_allocator);
 
-		pointer = default_allocator->Alloc(size);
+		pointer = default_allocator->Alloc(i_size);
 		ASSERT(pointer);
 
 	#ifdef BUILD_DEBUG
-		VERBOSE("Called %s(size = %zu) on BlockAllocator-%d", function_name, size, default_allocator->GetID());
+		VERBOSE("Called %s(i_size = %zu) on BlockAllocator-%d", i_function_name, i_size, default_allocator->GetID());
 	#endif
 
 		return pointer;
 	}
 
-	void DoFree(void* pointer, const char* function_name)
+	void DoFree(void* i_pointer, const char* i_function_name)
 	{
-		ASSERT(pointer);
+		ASSERT(i_pointer);
 
 		// get all available fixed size allocators
 		engine::memory::FixedSizeAllocator** const fixed_size_allocators = engine::memory::FixedSizeAllocator::GetAvailableFixedSizeAllocators();
@@ -240,10 +240,10 @@ namespace memory {
 		uint8_t num_fixed_size_allocators = MAX_FIXED_SIZE_ALLOCATORS;
 		while (num_fixed_size_allocators > 0)
 		{
-			if (fixed_size_allocators[num_fixed_size_allocators - 1] && fixed_size_allocators[num_fixed_size_allocators - 1]->Free(pointer))
+			if (fixed_size_allocators[num_fixed_size_allocators - 1] && fixed_size_allocators[num_fixed_size_allocators - 1]->Free(i_pointer))
 			{
 	#ifdef BUILD_DEBUG
-				VERBOSE("Called %s(pointer = %p) on FixedSizeAllocator-%d with fixed_block_size:%zu", function_name, pointer, fixed_size_allocators[num_fixed_size_allocators - 1]->GetID(), fixed_size_allocators[num_fixed_size_allocators - 1]->GetBlockSize());
+				VERBOSE("Called %s(i_pointer = %p) on FixedSizeAllocator-%d with fixed_block_size:%zu", i_function_name, i_pointer, fixed_size_allocators[num_fixed_size_allocators - 1]->GetID(), fixed_size_allocators[num_fixed_size_allocators - 1]->GetBlockSize());
 	#endif
 				return;
 			}
@@ -257,10 +257,10 @@ namespace memory {
 		uint8_t num_block_allocators = MAX_BLOCK_ALLOCATORS;
 		while (num_block_allocators > 0)
 		{
-			if (block_allocators[num_block_allocators - 1] && block_allocators[num_block_allocators - 1]->Free(pointer))
+			if (block_allocators[num_block_allocators - 1] && block_allocators[num_block_allocators - 1]->Free(i_pointer))
 			{
 	#ifdef BUILD_DEBUG
-				VERBOSE("Called %s(pointer = %p) on BlockAllocator-%d", function_name, pointer, block_allocators[num_block_allocators - 1]->GetID());
+				VERBOSE("Called %s(i_pointer = %p) on BlockAllocator-%d", i_function_name, i_pointer, block_allocators[num_block_allocators - 1]->GetID());
 	#endif
 				return;
 			}
@@ -268,7 +268,7 @@ namespace memory {
 		}
 
 		// this means the pointer could not be deleted
-		LOG_ERROR("Could not %s(pointer = %p) on any of the allocators!", function_name, pointer);
+		LOG_ERROR("Could not %s(i_pointer = %p) on any of the allocators!", i_function_name, i_pointer);
 	}
 
 } // namespace memory

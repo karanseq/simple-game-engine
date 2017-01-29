@@ -20,10 +20,10 @@ namespace memory {
 	}
 
 #ifdef BUILD_DEBUG
-	inline void BlockAllocator::ClearBlock(BD* bd, const unsigned char fill)
+	inline void BlockAllocator::ClearBlock(BD* i_bd, const unsigned char i_fill)
 	{
-		ASSERT(bd != nullptr);
-		memset(bd->block_pointer_, fill, bd->block_size_);
+		ASSERT(i_bd != nullptr);
+		memset(i_bd->block_pointer, i_fill, i_bd->block_size);
 	}
 
 	inline unsigned int BlockAllocator::GetID() const
@@ -33,10 +33,10 @@ namespace memory {
 #endif
 
 	// Query whether a given pointer is within this allocator's range
-	inline bool BlockAllocator::Contains(const void* pointer) const
+	inline bool BlockAllocator::Contains(const void* i_pointer) const
 	{
-		ASSERT(pointer != nullptr);
-		return (static_cast<const uint8_t*>(pointer) >= block_ && static_cast<const uint8_t*>(pointer) <= (block_ + total_block_size_));
+		ASSERT(i_pointer != nullptr);
+		return (static_cast<const uint8_t*>(i_pointer) >= block_ && static_cast<const uint8_t*>(i_pointer) <= (block_ + total_block_size_));
 	}
 
 	inline const size_t BlockAllocator::GetTotalFreeMemorySize() const
@@ -46,8 +46,8 @@ namespace memory {
 		BD* bd = free_list_head_;
 		while (bd != nullptr)
 		{
-			total_size += bd->block_size_;
-			bd = bd->next_;
+			total_size += bd->block_size;
+			bd = bd->next;
 		}
 
 		return total_size;
@@ -56,7 +56,7 @@ namespace memory {
 	inline const size_t BlockAllocator::GetNumOustandingBlocks() const
 	{
 		size_t num_outstanding_blocks = 0;
-		for (BD* bd = user_list_head_; bd != nullptr; bd = bd->next_)
+		for (BD* bd = user_list_head_; bd != nullptr; bd = bd->next)
 		{
 			++num_outstanding_blocks;
 		}

@@ -13,49 +13,58 @@ namespace math {
 	class Vec3D
 	{
 	public:
-		Vec3D(float x = 0.0f, float y = 0.0f, float z = 0.0f);
-		Vec3D(const Vec3D& copy);
+		explicit Vec3D(float i_x = 0.0f, float i_y = 0.0f, float i_z = 0.0f);
+		Vec3D(const Vec3D& i_copy);
 
 		~Vec3D()
 		{}
 
 		// accessors and mutators
 		inline float x() const;
-		inline void x(float x);
+		inline void x(float i_x);
 		inline float y() const;
-		inline void y(float y);
+		inline void y(float i_y);
 		inline float z() const;
-		inline void z(float z);
-		inline void set(float x = 0.0f, float y = 0.0f, float z = 0.0f);
+		inline void z(float i_z);
+		inline void set(float i_x = 0.0f, float i_y = 0.0f, float i_z = 0.0f);
 
 		// assignment
-		inline Vec3D& operator=(const Vec3D& vec);
+		inline Vec3D& operator=(const Vec3D& i_vec);
 
 		// arithmetic
-		inline Vec3D operator+(const Vec3D& vec) const;
-		inline Vec3D& operator+=(const Vec3D& vec);
-		inline Vec3D operator-(const Vec3D& vec) const;
-		inline Vec3D& operator-=(const Vec3D& vec);
-		inline Vec3D& operator*=(float scale);
+		inline Vec3D operator+(const Vec3D& i_vec) const;
+		inline Vec3D& operator+=(const Vec3D& i_vec);
+		inline Vec3D operator-(const Vec3D& i_vec) const;
+		inline Vec3D& operator-=(const Vec3D& i_vec);
+		inline Vec3D operator*(float i_scale) const;
+		inline Vec3D& operator*=(float i_scale);
 
 		// relational
-		inline bool operator==(const Vec3D& vec) const;
-		inline bool operator!=(const Vec3D& vec) const;
+		inline bool operator==(const Vec3D& i_vec) const;
+		inline bool operator!=(const Vec3D& i_vec) const;
 
 		// unary
 		inline Vec3D operator-() const;
 
+		// functions
+		inline bool IsZero() const;
+		inline bool IsOne() const;
+		inline float LengthSquared() const;
+		float Length() const;
+		void Normalize();
+		Vec3D Normalize() const;
+
 		// constants
-		static const Vec3D ZERO;
-		static const Vec3D UNIT;
-		static const Vec3D UNIT_X;
-		static const Vec3D UNIT_Y;
-		static const Vec3D UNIT_Z;
+		static const Vec3D			ZERO;
+		static const Vec3D			UNIT;
+		static const Vec3D			UNIT_X;
+		static const Vec3D			UNIT_Y;
+		static const Vec3D			UNIT_Z;
 
 	protected:
-		float x_;
-		float y_;
-		float z_;
+		float						x_;
+		float						y_;
+		float						z_;
 	}; // class Vec3D
 
 } // namespace math

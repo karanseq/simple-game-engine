@@ -170,6 +170,7 @@
     <ClCompile Include="Source\Tests\Private\FixedSizeAllocator_UnitTest.cpp" />
     <ClCompile Include="Source\Tests\Private\FloatValidityTest.cpp" />
     <ClCompile Include="Source\Tests\Private\HeapManager_UnitTest.cpp" />
+    <ClCompile Include="Source\Tests\Private\SmartPointersTest.cpp" />
     <ClCompile Include="Source\Tests\Private\Tests.cpp" />
     <ClCompile Include="Source\Tests\Private\VectorConstnessTest.cpp" />
   </ItemGroup>

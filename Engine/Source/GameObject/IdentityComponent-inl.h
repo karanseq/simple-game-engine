@@ -6,42 +6,42 @@
 
 // engine includes
 #include "Assert\Assert.h"
-#include "Memory\AllocatorUtil.h"
+#include "Common\HelperMacros.h"
 
 namespace engine {
 namespace gameobject {
 
-	inline IdentityComponent& IdentityComponent::operator=(const IdentityComponent& ic)
+	inline IdentityComponent& IdentityComponent::operator=(const IdentityComponent& i_ic)
 	{
 		// check for self assignment
-		if (this != &ic)
+		if (this != &i_ic)
 		{
-			id_ = ic.id_;
-			tag_ = ic.tag_;
+			id_ = i_ic.id_;
+			tag_ = i_ic.tag_;
 
 			SAFE_FREE(name_);
-			name_ = _strdup(ic.name_);
+			name_ = _strdup(i_ic.name_);
 		}
 
 		return *this;
 	}
 
-	inline IdentityComponent& IdentityComponent::operator=(IdentityComponent&& ic)
+	inline IdentityComponent& IdentityComponent::operator=(IdentityComponent&& i_ic)
 	{
 		// check for self assignment
-		if (this != &ic)
+		if (this != &i_ic)
 		{
-			id_ = ic.id_;
-			tag_ = ic.tag_;
-			std::swap(name_, ic.name_);
+			id_ = i_ic.id_;
+			tag_ = i_ic.tag_;
+			std::swap(name_, i_ic.name_);
 		}
 
 		return *this;
 	}
 
-	inline void IdentityComponent::SetID(uint32_t id)
+	inline void IdentityComponent::SetID(uint32_t i_id)
 	{ 
-		id_ = id;
+		id_ = i_id;
 	}
 
 	inline uint32_t IdentityComponent::GetID() const
@@ -49,9 +49,9 @@ namespace gameobject {
 		return id_;
 	}
 
-	inline void IdentityComponent::SetTag(uint32_t tag) 
+	inline void IdentityComponent::SetTag(uint32_t i_tag) 
 	{ 
-		tag_ = tag;
+		tag_ = i_tag;
 	}
 
 	inline uint32_t IdentityComponent::GetTag() const 
@@ -59,11 +59,11 @@ namespace gameobject {
 		return tag_;
 	}
 
-	inline void IdentityComponent::SetName(const char* name) 
+	inline void IdentityComponent::SetName(const char* i_name) 
 	{ 
-		ASSERT(name); 
+		ASSERT(i_name); 
 		SAFE_FREE(name_); 
-		name_ = _strdup(name); 
+		name_ = _strdup(i_name); 
 	}
 
 	inline const char* IdentityComponent::GetName() const 

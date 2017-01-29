@@ -14,22 +14,25 @@ namespace math {
 	class Transform
 	{
 	public:
-		Transform(Vec3D position = Vec3D::ZERO, Vec3D rotation = Vec3D::ZERO, Vec3D scale = Vec3D::UNIT);
-		Transform(const Transform& copy);
+		explicit Transform(Vec3D i_position = Vec3D::ZERO, Vec3D i_rotation = Vec3D::ZERO, Vec3D i_scale = Vec3D::UNIT);
+		Transform(const Transform& i_copy);
 
 		~Transform()
 		{}
 
 		// assignment
-		inline Transform& operator=(const Transform& transform);
+		inline Transform& operator=(const Transform& i_transform);
 
 		// accessors and mutators
 		inline const Vec3D& GetPosition() const;
-		inline void SetPosition(const Vec3D& position);
+		inline void SetPosition(const Vec3D& i_position);
 		inline const Vec3D& GetRotation() const;
-		inline void SetRotation(const Vec3D& rotation);
+		inline void SetRotation(const Vec3D& i_rotation);
 		inline const Vec3D& GetScale() const;
-		inline void SetScale(const Vec3D& scale);
+		inline void SetScale(const Vec3D& i_scale);
+
+		// constants
+		static const Transform			ZERO;
 
 	protected:
 		Vec3D position_;

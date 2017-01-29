@@ -13,45 +13,54 @@ namespace math {
 	class Vec2D
 	{
 	public:
-		Vec2D(float x = 0.0f, float y = 0.0f);
-		Vec2D(const Vec2D& copy);
+		explicit Vec2D(float i_x = 0.0f, float i_y = 0.0f);
+		Vec2D(const Vec2D& i_copy);
 
 		~Vec2D()
 		{}
 
 		// accessors and mutators
 		inline float x() const;
-		inline void x(float x);
+		inline void x(float i_x);
 		inline float y() const;
-		inline void y(float y);
-		inline void set(float x = 0.0f, float y = 0.0f);
+		inline void y(float i_y);
+		inline void set(float i_x = 0.0f, float i_y = 0.0f);
 
 		// assignment
-		inline Vec2D& operator=(const Vec2D& vec);
+		inline Vec2D& operator=(const Vec2D& i_vec);
 
 		// arithmetic
-		inline Vec2D operator+(const Vec2D& vec) const;
-		inline Vec2D& operator+=(const Vec2D& vec);
-		inline Vec2D operator-(const Vec2D& vec) const;
-		inline Vec2D& operator-=(const Vec2D& vec);
-		inline Vec2D& operator*=(float scale);
+		inline Vec2D operator+(const Vec2D& i_vec) const;
+		inline Vec2D& operator+=(const Vec2D& i_vec);
+		inline Vec2D operator-(const Vec2D& i_vec) const;
+		inline Vec2D& operator-=(const Vec2D& i_vec);
+		inline Vec2D operator*(float i_scale) const;
+		inline Vec2D& operator*=(float i_scale);
 
 		// relational
-		inline bool operator==(const Vec2D& vec) const;
-		inline bool operator!=(const Vec2D& vec) const;
+		inline bool operator==(const Vec2D& i_vec) const;
+		inline bool operator!=(const Vec2D& i_vec) const;
 
 		// unary
 		inline Vec2D operator-() const;
 
+		// functions
+		inline bool IsZero() const;
+		inline bool IsOne() const;
+		inline float LengthSquared() const;
+		float Length() const;
+		void Normalize();
+		Vec2D Normalize() const;
+
 		// constants
-		static const Vec2D ZERO;
-		static const Vec2D UNIT;
-		static const Vec2D UNIT_X;
-		static const Vec2D UNIT_Y;
+		static const Vec2D			ZERO;
+		static const Vec2D			UNIT;
+		static const Vec2D			UNIT_X;
+		static const Vec2D			UNIT_Y;
 
 	protected:
-		float x_;
-		float y_;
+		float						x_;
+		float						y_;
 	}; // class Vec2D
 
 } // namespace math

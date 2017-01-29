@@ -150,6 +150,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Assert\Assert.h" />
+    <ClInclude Include="Source\Common\Engine.h" />
+    <ClInclude Include="Source\Common\HelperMacros.h" />
     <ClInclude Include="Source\Data\BitArray-inl.h" />
     <ClInclude Include="Source\Data\BitArray.h" />
     <ClInclude Include="Source\GameObject\GameObject-inl.h" />
@@ -171,8 +173,24 @@
     <ClInclude Include="Source\Memory\AllocatorOverrides.h" />
     <ClInclude Include="Source\Memory\FixedSizeAllocator-inl.h" />
     <ClInclude Include="Source\Memory\FixedSizeAllocator.h" />
+    <ClInclude Include="Source\Memory\RefCounter.h" />
+    <ClInclude Include="Source\Memory\SharedPointer-inl.h" />
+    <ClInclude Include="Source\Memory\SharedPointer.h" />
+    <ClInclude Include="Source\Memory\UniquePointer-inl.h" />
+    <ClInclude Include="Source\Memory\UniquePointer.h" />
+    <ClInclude Include="Source\Memory\WeakPointer-inl.h" />
+    <ClInclude Include="Source\Memory\WeakPointer.h" />
+    <ClInclude Include="Source\Physics\Physics-inl.h" />
+    <ClInclude Include="Source\Physics\Physics.h" />
+    <ClInclude Include="Source\Physics\PhysicsObject-inl.h" />
+    <ClInclude Include="Source\Physics\PhysicsObject.h" />
+    <ClInclude Include="Source\Time\InterfaceTickable.h" />
+    <ClInclude Include="Source\Time\TimerUtil.h" />
+    <ClInclude Include="Source\Time\Updater-inl.h" />
+    <ClInclude Include="Source\Time\Updater.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Common\Private\Engine.cpp" />
     <ClCompile Include="Source\Data\Private\BitArray.cpp" />
     <ClCompile Include="Source\GameObject\Private\IdentityComponent.cpp" />
     <ClCompile Include="Source\Logger\Private\Logger.win32.cpp" />
@@ -183,6 +201,11 @@
     <ClCompile Include="Source\Memory\Private\BlockAllocator.cpp" />
     <ClCompile Include="Source\Memory\Private\AllocatorOverrides.cpp" />
     <ClCompile Include="Source\Memory\Private\FixedSizeAllocator.cpp" />
+    <ClCompile Include="Source\Physics\Private\Physics.cpp" />
+    <ClCompile Include="Source\Physics\Private\PhysicsObject.cpp" />
+    <ClCompile Include="Source\Time\Private\TimerUtil.cpp" />
+    <ClCompile Include="Source\Time\Private\TimerUtil.win32.cpp" />
+    <ClCompile Include="Source\Time\Private\Updater.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

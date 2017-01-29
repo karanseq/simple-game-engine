@@ -22,14 +22,14 @@ namespace memory {
 typedef struct BlockDescriptor
 {
 public:
-	BlockDescriptor*		next_;					// pointer to the next block descriptor
-	BlockDescriptor*		previous_;				// pointer to the previous block descriptor
-	uint8_t*				block_pointer_;			// pointer to the actual block of data
-	size_t					block_size_;			// size of the actual block of data
+	BlockDescriptor*		next;					// pointer to the next block descriptor
+	BlockDescriptor*		previous;				// pointer to the previous block descriptor
+	uint8_t*				block_pointer;			// pointer to the actual block of data
+	size_t					block_size;				// size of the actual block of data
 
 #ifdef BUILD_DEBUG
-	size_t					user_size_;				// size of the block requested by the user
-	uint32_t				id_;					// an identifier for each descriptor
+	size_t					user_size;				// size of the block requested by the user
+	uint32_t				id;						// an identifier for each descriptor
 #endif
 } BD;
 
@@ -48,58 +48,58 @@ public:
 class BlockAllocator
 {
 private:
-	// disable default constructor, copy constructor & assignment operator
-	BlockAllocator() {}
-	BlockAllocator(const BlockAllocator& copy);
-	BlockAllocator& operator=(const BlockAllocator& ba);
+	// disable copy constructor & assignment operator
+	BlockAllocator(const BlockAllocator& i_copy) = delete;
+	BlockAllocator& operator=(const BlockAllocator& i_ba) = delete;
 
-	BlockAllocator(void* memory, size_t block_size);
+	BlockAllocator(void* i_memory, size_t i_block_size);
 	~BlockAllocator() {}
 
 	void InitFirstBlockDescriptor();
 
-	void AddToList(BD** head, BD** bd, bool enable_sort);
-	void RemoveFromList(BD** head, BD** bd);
+	void AddToList(BD** i_head, BD** i_bd, bool i_enable_sort);
+	void RemoveFromList(BD** i_head, BD** i_bd);
 
 #ifdef BUILD_DEBUG
-	bool CheckMemoryOverwrite(BD* bd) const;
-	inline void ClearBlock(BD* bd, const unsigned char fill);
+	bool CheckMemoryOverwrite(BD* i_bd) const;
+	inline void ClearBlock(BD* i_bd, const unsigned char i_fill);
 #endif
 
 public:
-	static BlockAllocator* Create(void* memory, size_t block_size);
-	static void Destroy(BlockAllocator* allocator);
+	static BlockAllocator* Create(void* i_memory, size_t i_block_size);
+	static void Destroy(BlockAllocator* i_allocator);
 
 	static BlockAllocator* GetDefaultAllocator();
 	static void CreateDefaultAllocator();
 	static void DestroyDefaultAllocator();
 
-	static bool IsBlockAllocatorAvailable(BlockAllocator* allocator);
-	static bool AddBlockAllocator(BlockAllocator* allocator);
-	static bool RemoveBlockAllocator(BlockAllocator* allocator);
+	static bool IsBlockAllocatorAvailable(BlockAllocator* i_allocator);
+	static bool AddBlockAllocator(BlockAllocator* i_allocator);
+	static bool RemoveBlockAllocator(BlockAllocator* i_allocator);
 	static inline BlockAllocator** const GetAvailableBlockAllocators();
 
 	// Allocate a block of memory with given size & byte alignment
-	void* Alloc(const size_t size, const size_t alignment = DEFAULT_BYTE_ALIGNMENT);
+	void* Alloc(const size_t i_size, const size_t i_alignment = DEFAULT_BYTE_ALIGNMENT);
 	// Deallocate a block of memory
-	bool Free(void* pointer);
+	bool Free(void* i_pointer);
 
 	// Run defragmentation
 	void Defragment();
 
 	// Query whether a given pointer is within this allocator's range
-	inline bool Contains(const void* pointer) const;
+	inline bool Contains(const void* i_pointer) const;
 	// Query whether a given pointer is an outstanding allocation
-	bool IsAllocated(const void* pointer) const;
+	bool IsAllocated(const void* i_pointer) const;
 
 	static inline size_t GetSizeOfBD();
-	const size_t GetLargestFreeBlockSize(const size_t alignment = DEFAULT_BYTE_ALIGNMENT) const;
+	const size_t GetLargestFreeBlockSize(const size_t i_alignment = DEFAULT_BYTE_ALIGNMENT) const;
 	inline const size_t GetTotalFreeMemorySize() const;
 
 	inline const size_t GetNumOustandingBlocks() const;
 
 #ifdef BUILD_DEBUG
 	inline unsigned int GetID() const;
+    void DumpStatistics() const;
 	void PrintAllDescriptors() const;
 	void PrintFreeDescriptors() const;
 	void PrintUsedDescriptors() const;
@@ -118,6 +118,7 @@ private:
 	uint32_t										descriptor_counter_;									// a counter to keep track of all the descriptors (resets to 0 after reaching uint32_t's max value)
 	uint8_t											id_;													// an id to keep track of this allocator in debug mode
 	static uint8_t									counter_;												// a counter that will be used while setting ids for allocators
+    AllocatorStatistics                             stats_;                                                 // a struct that keeps track of various statistics to help diagnose memory usage
 #endif
 
 	static BlockAllocator*							available_allocators_[MAX_BLOCK_ALLOCATORS];			// an array of pointers to all registered block allocators

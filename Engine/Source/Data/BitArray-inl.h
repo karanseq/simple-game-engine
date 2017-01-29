@@ -9,14 +9,14 @@
 namespace engine {
 namespace data {
 
-	inline BitArray& BitArray::operator=(BitArray&& bit_array)
+	inline BitArray& BitArray::operator=(BitArray&& i_bit_array)
 	{
 		// check for self assignment
-		if (this != &bit_array)
+		if (this != &i_bit_array)
 		{
-			std::swap(buckets_, bit_array.buckets_);
-			num_buckets_ = bit_array.num_buckets_;
-			num_bits_ = bit_array.num_bits_;
+			std::swap(buckets_, i_bit_array.buckets_);
+			num_buckets_ = i_bit_array.num_buckets_;
+			num_bits_ = i_bit_array.num_bits_;
 		}
 		return *this;
 	}
@@ -39,26 +39,26 @@ namespace data {
 		}
 	}
 
-	inline bool BitArray::IsBitSet(size_t bit_index) const
+	inline bool BitArray::IsBitSet(size_t i_bit_index) const
 	{
 		// validate input
-		ASSERT(bit_index >= 0);
-		ASSERT(bit_index < num_bits_);
+		ASSERT(i_bit_index >= 0);
+		ASSERT(i_bit_index < num_bits_);
 
 		// calculate the bucket index
-		size_t bucket_index = bit_index / bit_depth_;
+		size_t bucket_index = i_bit_index / bit_depth_;
 
-		return (buckets_[bucket_index] >> bit_index) & static_cast<size_t>(1);
+		return (buckets_[bucket_index] >> i_bit_index) & static_cast<size_t>(1);
 	}
 
-	inline bool BitArray::IsBitClear(size_t bit_index) const
+	inline bool BitArray::IsBitClear(size_t i_bit_index) const
 	{
-		return !IsBitSet(bit_index);
+		return !IsBitSet(i_bit_index);
 	}
 
-	inline bool BitArray::Get(size_t bit_index) const
+	inline bool BitArray::Get(size_t i_bit_index) const
 	{
-		return IsBitSet(bit_index);
+		return IsBitSet(i_bit_index);
 	}
 
 	inline size_t BitArray::Size() const
@@ -66,9 +66,9 @@ namespace data {
 		return num_bits_;
 	}
 
-	inline size_t BitArray::GetRequiredMemorySize(size_t num_bits)
+	inline size_t BitArray::GetRequiredMemorySize(size_t i_num_bits)
 	{
-		const size_t num_buckets = ((num_bits & (bit_depth_ - 1)) ? 1 : 0) + num_bits / bit_depth_;
+		const size_t num_buckets = ((i_num_bits & (bit_depth_ - 1)) ? 1 : 0) + i_num_bits / bit_depth_;
 		return sizeof(BitArray) + sizeof(size_t) * num_buckets;
 	}
 

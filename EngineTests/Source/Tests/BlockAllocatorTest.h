@@ -8,10 +8,10 @@
 class BlockAllocatorTest
 {
 private:
-	BlockAllocatorTest() {};
-	~BlockAllocatorTest() {};
-	BlockAllocatorTest(const BlockAllocatorTest& i_copy);
-	BlockAllocatorTest& operator=(const BlockAllocatorTest& i_at);
+	BlockAllocatorTest() = delete;
+	~BlockAllocatorTest() = delete;
+	BlockAllocatorTest(const BlockAllocatorTest& i_copy) = delete;
+	BlockAllocatorTest& operator=(const BlockAllocatorTest& i_at) = delete;
 
 	static char* DoAlloc(const size_t i_size);
 	static void DoFree(char* pointer, const size_t i_size);

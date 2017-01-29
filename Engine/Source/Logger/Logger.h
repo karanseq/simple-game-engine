@@ -49,9 +49,9 @@
 
 namespace engine
 {
-	void Print(const char* type, const char* format, ...);
+	void Print(const char* i_type, const char* i_format, ...);
 #if defined(VERBOSITY_LEVEL) && (VERBOSITY_LEVEL > 1)
-	void Print(const char* function_name, const int line_number, const char* format, ...);
+	void Print(const char* i_function_name, const int i_line_number, const char* i_format, ...);
 #endif
 } // namespace engine
 

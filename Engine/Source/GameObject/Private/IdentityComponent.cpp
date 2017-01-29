@@ -7,21 +7,21 @@
 namespace engine {
 namespace gameobject {
 
-	IdentityComponent::IdentityComponent(uint32_t id, uint32_t tag, const char* name) : id_(id),
-		tag_(tag),
-		name_(_strdup(name))
+	IdentityComponent::IdentityComponent(uint32_t i_id, uint32_t i_tag, const char* i_name) : id_(i_id),
+		tag_(i_tag),
+		name_(_strdup(i_name))
 	{}
 
-	IdentityComponent::IdentityComponent(const IdentityComponent& copy) : id_(copy.id_),
-		tag_(copy.tag_),
-		name_(_strdup(copy.name_))
+	IdentityComponent::IdentityComponent(const IdentityComponent& i_copy) : id_(i_copy.id_),
+		tag_(i_copy.tag_),
+		name_(_strdup(i_copy.name_))
 	{}
 
-	IdentityComponent::IdentityComponent(IdentityComponent&& copy) : id_(copy.id_),
-		tag_(copy.tag_),
-		name_(copy.name_)
+	IdentityComponent::IdentityComponent(IdentityComponent&& i_copy) : id_(i_copy.id_),
+		tag_(i_copy.tag_),
+		name_(i_copy.name_)
 	{
-		copy.name_ = nullptr;
+		i_copy.name_ = nullptr;
 	}
 
 	IdentityComponent::~IdentityComponent()

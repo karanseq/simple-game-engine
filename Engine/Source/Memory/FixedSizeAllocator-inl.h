@@ -15,22 +15,22 @@ namespace memory {
 		return available_allocators_;
 	}
 
-	inline uint8_t* FixedSizeAllocator::GetPointerForBlock(const size_t bit_index) const
+	inline uint8_t* FixedSizeAllocator::GetPointerForBlock(const size_t i_bit_index) const
 	{
-		ASSERT(bit_index >= 0 && bit_index < num_blocks_);
+		ASSERT(i_bit_index >= 0 && i_bit_index < num_blocks_);
 #ifdef BUILD_DEBUG
-		return block_ + (bit_index * (DEFAULT_GUARDBAND_SIZE * 2 + sizeof(size_t) + fixed_block_size_));
+		return block_ + (i_bit_index * (DEFAULT_GUARDBAND_SIZE * 2 + sizeof(size_t) + fixed_block_size_));
 #else
-		return block_ + (bit_index * fixed_block_size_);
+		return block_ + (i_bit_index * fixed_block_size_);
 #endif
 	}
 
 #ifdef BUILD_DEBUG
-	inline void FixedSizeAllocator::ClearBlock(size_t bit_index, const unsigned char fill)
+	inline void FixedSizeAllocator::ClearBlock(size_t i_bit_index, const unsigned char i_fill)
 	{
-		ASSERT(bit_index >= 0 && bit_index < num_blocks_);
-		uint8_t* block = GetPointerForBlock(bit_index);
-		memset(block, fill, fixed_block_size_);
+		ASSERT(i_bit_index >= 0 && i_bit_index < num_blocks_);
+		uint8_t* block = GetPointerForBlock(i_bit_index);
+		memset(block, i_fill, fixed_block_size_);
 	}
 
 	inline unsigned int FixedSizeAllocator::GetID() const
@@ -40,10 +40,10 @@ namespace memory {
 #endif
 
 	// Query whether a given pointer is within this allocator's range
-	inline bool FixedSizeAllocator::Contains(const void* pointer) const
+	inline bool FixedSizeAllocator::Contains(const void* i_pointer) const
 	{
-		ASSERT(pointer != nullptr);
-		return (static_cast<const uint8_t*>(pointer) >= block_ && static_cast<const uint8_t*>(pointer) <= (block_ + total_block_size_));
+		ASSERT(i_pointer != nullptr);
+		return (static_cast<const uint8_t*>(i_pointer) >= block_ && static_cast<const uint8_t*>(i_pointer) <= (block_ + total_block_size_));
 	}
 
 	inline const size_t FixedSizeAllocator::GetNumAvailableBlocks() const

@@ -48,6 +48,9 @@
     <ClCompile Include="Source\Tests\Private\VectorConstnessTest.cpp">
       <Filter>Source Files\Tests</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Tests\Private\SmartPointersTest.cpp">
+      <Filter>Source Files\Tests</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Tests\BlockAllocatorTest.h">

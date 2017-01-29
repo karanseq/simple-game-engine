@@ -15,30 +15,30 @@ namespace gameobject {
 	class IdentityComponent
 	{
 	public:
-		IdentityComponent(uint32_t id = 0, uint32_t tag = 0, const char* name = "");
+		explicit IdentityComponent(uint32_t i_id = 0, uint32_t i_tag = 0, const char* i_name = "");
 	
 		// standard copy constuctor
-		IdentityComponent(const IdentityComponent& copy);
+		IdentityComponent(const IdentityComponent& i_copy);
 
 		// move copy constructor
-		IdentityComponent(IdentityComponent&& copy);
+		IdentityComponent(IdentityComponent&& i_copy);
 
 		~IdentityComponent();
 
 		// copy assignment
-		inline IdentityComponent& operator=(const IdentityComponent& ic);		
+		inline IdentityComponent& operator=(const IdentityComponent& i_ic);
 
 		// move assignment
-		inline IdentityComponent& operator=(IdentityComponent&& ic);
+		inline IdentityComponent& operator=(IdentityComponent&& i_ic);
 
 		// accessors and mutators
-		inline void SetID(uint32_t id);
+		inline void SetID(uint32_t i_id);
 		inline uint32_t GetID() const;
 
-		inline void SetTag(uint32_t tag);
+		inline void SetTag(uint32_t i_tag);
 		inline uint32_t GetTag() const;
 
-		inline void SetName(const char* name);
+		inline void SetName(const char* i_name);
 		inline const char* GetName() const;
 
 	protected:

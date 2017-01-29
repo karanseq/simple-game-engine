@@ -21,10 +21,10 @@ BlockAllocator*		BlockAllocator::available_allocators_[MAX_BLOCK_ALLOCATORS] = {
 uint8_t				BlockAllocator::counter_ = 0;
 #endif
 
-BlockAllocator::BlockAllocator(void* memory, size_t block_size) : block_(static_cast<uint8_t*>(memory)),
+BlockAllocator::BlockAllocator(void* i_memory, size_t i_block_size) : block_(static_cast<uint8_t*>(i_memory)),
 	user_list_head_(nullptr),
 	free_list_head_(nullptr),
-	total_block_size_(block_size)
+	total_block_size_(i_block_size)
 {
 	// validate input
 	ASSERT(block_);
@@ -40,40 +40,43 @@ BlockAllocator::BlockAllocator(void* memory, size_t block_size) : block_(static_
 	InitFirstBlockDescriptor();
 }
 
-BlockAllocator* BlockAllocator::Create(void* memory, size_t block_size)
+BlockAllocator* BlockAllocator::Create(void* i_memory, size_t i_block_size)
 {
 	// validate input
-	ASSERT(memory);
-	ASSERT(block_size > 0);
-	ASSERT(block_size > (sizeof(BlockAllocator)));
+	ASSERT(i_memory);
+	ASSERT(i_block_size > 0);
+	ASSERT(i_block_size > (sizeof(BlockAllocator)));
 
 	// add the allocator to the start of the aligned memory block
-	uint8_t* block_allocator_memory = static_cast<uint8_t*>(memory);
+	uint8_t* block_allocator_memory = static_cast<uint8_t*>(i_memory);
 	// move up the address of the usable block
 	block_allocator_memory += sizeof(BlockAllocator);
 	// reduce the size of the usable block
-	block_size -= sizeof(BlockAllocator);
+	i_block_size -= sizeof(BlockAllocator);
 
 	// create the allocator
-	BlockAllocator* block_allocator = new (memory) BlockAllocator(block_allocator_memory, block_size);
+	BlockAllocator* block_allocator = new (i_memory) BlockAllocator(block_allocator_memory, i_block_size);
 	ASSERT(block_allocator);
 
 	return block_allocator;
 }
 
-void BlockAllocator::Destroy(BlockAllocator* allocator)
+void BlockAllocator::Destroy(BlockAllocator* i_allocator)
 {
 	// validate input
-	ASSERT(allocator);
+	ASSERT(i_allocator);
 
 #ifdef BUILD_DEBUG
 	// TODO: Print *more* diagnostics
-	if (allocator->user_list_head_ != nullptr)
+	if (i_allocator->user_list_head_ != nullptr)
 	{
-		LOG_ERROR("WARNING! Found %zu unfreed allocations in BlockAllocator-%d", allocator->GetNumOustandingBlocks(), allocator->id_);
+		LOG_ERROR("WARNING! Found %zu unfreed allocations in BlockAllocator-%d", i_allocator->GetNumOustandingBlocks(), i_allocator->id_);
 	}
 
-	VERBOSE("BlockAllocator-%d destroyed", allocator->id_);
+    // dump statistics
+    i_allocator->DumpStatistics();
+
+	VERBOSE("BlockAllocator-%d destroyed", i_allocator->id_);
 #endif
 }
 
@@ -123,15 +126,15 @@ void BlockAllocator::DestroyDefaultAllocator()
 	available_allocators_[0] = nullptr;
 }
 
-bool BlockAllocator::IsBlockAllocatorAvailable(BlockAllocator* allocator)
+bool BlockAllocator::IsBlockAllocatorAvailable(BlockAllocator* i_allocator)
 {
 	// validate input
-	ASSERT(allocator);
+	ASSERT(i_allocator);
 
 	// search for the allocator
 	for (uint8_t i = 0; i < MAX_BLOCK_ALLOCATORS; ++i)
 	{
-		if (available_allocators_[i] == allocator)
+		if (available_allocators_[i] == i_allocator)
 		{
 			return true;
 		}
@@ -139,10 +142,10 @@ bool BlockAllocator::IsBlockAllocatorAvailable(BlockAllocator* allocator)
 	return false;
 }
 
-bool BlockAllocator::AddBlockAllocator(BlockAllocator* allocator)
+bool BlockAllocator::AddBlockAllocator(BlockAllocator* i_allocator)
 {
 	// validate input
-	ASSERT(allocator);
+	ASSERT(i_allocator);
 
 	// find a suitable position in the list of registered allocators
 	// i starts at 1 since the first position in the array is reserved for the default allocator
@@ -150,23 +153,23 @@ bool BlockAllocator::AddBlockAllocator(BlockAllocator* allocator)
 	{
 		if (!available_allocators_[i])
 		{
-			available_allocators_[i] = allocator;
+			available_allocators_[i] = i_allocator;
 			return true;
 		}
 	}
 	return false;
 }
 
-bool BlockAllocator::RemoveBlockAllocator(BlockAllocator* allocator)
+bool BlockAllocator::RemoveBlockAllocator(BlockAllocator* i_allocator)
 {
 	// validate input
-	ASSERT(allocator);
+	ASSERT(i_allocator);
 
 	// search for the allocator in the list of registered allocators
 	// i starts at 1 since the first position in the array is reserved for the default allocator
 	for (uint8_t i = 1; i < MAX_BLOCK_ALLOCATORS; ++i)
 	{
-		if (available_allocators_[i] == allocator)
+		if (available_allocators_[i] == i_allocator)
 		{
 			available_allocators_[i] = nullptr;
 			return true;
@@ -179,111 +182,111 @@ void BlockAllocator::InitFirstBlockDescriptor()
 {
 	// initialize the first descriptor
 	BD* first_bd = reinterpret_cast<BD*>(block_);
-	first_bd->block_pointer_ = block_ + size_of_BD_;
-	first_bd->block_size_ = total_block_size_ - size_of_BD_;
+	first_bd->block_pointer = block_ + size_of_BD_;
+	first_bd->block_size = total_block_size_ - size_of_BD_;
 #ifdef BUILD_DEBUG
-	first_bd->id_ = descriptor_counter_++;
+	first_bd->id = descriptor_counter_++;
 #endif
 
 	// add the descriptor to the free list
 	AddToList(&free_list_head_, &first_bd, false);
 }
 
-void BlockAllocator::AddToList(BD** head, BD** bd, bool enable_sort)
+void BlockAllocator::AddToList(BD** i_head, BD** i_bd, bool i_enable_sort)
 {
 	// validate input
-	ASSERT(head != nullptr);
-	ASSERT(bd != nullptr);
+	ASSERT(i_head != nullptr);
+	ASSERT(i_bd != nullptr);
 
 	// check if the list is empty
-	if (*head == nullptr)
+	if (*i_head == nullptr)
 	{
 		// add the new descriptor to the front
-		(*bd)->next_ = nullptr;
-		(*bd)->previous_ = nullptr;
-		*head = *bd;
+		(*i_bd)->next = nullptr;
+		(*i_bd)->previous = nullptr;
+		*i_head = *i_bd;
 		return;
 	}
 
 	// add the new descriptor to the front if:
 	// sorting is disabled OR the new descriptor's block pointer is before the head's
-	if (!enable_sort || (*bd)->block_pointer_ < (*head)->block_pointer_)
+	if (!i_enable_sort || (*i_bd)->block_pointer < (*i_head)->block_pointer)
 	{
-		(*head)->previous_ = *bd;
-		(*bd)->next_ = *head;
-		(*bd)->previous_ = nullptr;
-		*head = *bd;
+		(*i_head)->previous = *i_bd;
+		(*i_bd)->next = *i_head;
+		(*i_bd)->previous = nullptr;
+		*i_head = *i_bd;
 	}
-	else if (enable_sort)
+	else if (i_enable_sort)
 	{
 		// add this descriptor based on ascending order of address
-		BD* curr = *head;
+		BD* curr = *i_head;
 		BD* prev = nullptr;
 		while (curr != nullptr)
 		{
-			if ((*bd)->block_pointer_ < curr->block_pointer_)
+			if ((*i_bd)->block_pointer < curr->block_pointer)
 			{
 				if (prev != nullptr)
 				{
-					prev->next_ = *bd;
+					prev->next = *i_bd;
 				}
-				(*bd)->next_ = curr;
-				(*bd)->previous_ = prev;
-				curr->previous_ = *bd;
+				(*i_bd)->next = curr;
+				(*i_bd)->previous = prev;
+				curr->previous = *i_bd;
 				return;
 			}
 			prev = curr;
-			curr = curr->next_;
+			curr = curr->next;
 		}
 
 		// this means the descriptor's block is larger than all elements in the list
-		prev->next_ = *bd;
-		(*bd)->next_ = nullptr;
-		(*bd)->previous_ = prev;
+		prev->next = *i_bd;
+		(*i_bd)->next = nullptr;
+		(*i_bd)->previous = prev;
 	}
 }
 
-void BlockAllocator::RemoveFromList(BD** head, BD** bd)
+void BlockAllocator::RemoveFromList(BD** i_head, BD** i_bd)
 {
 	// validate input
-	ASSERT(head != nullptr);
-	ASSERT(bd != nullptr);
+	ASSERT(i_head != nullptr);
+	ASSERT(i_bd != nullptr);
 
-	if ((*bd)->previous_ == nullptr)
+	if ((*i_bd)->previous == nullptr)
 	{
 		// this means we're removing the head
-		*head = (*bd)->next_;
+		*i_head = (*i_bd)->next;
 	}
 	else
 	{
 		// update previous block's next pointer
-		((*bd)->previous_)->next_ = (*bd)->next_;
+		((*i_bd)->previous)->next = (*i_bd)->next;
 	}
 
 	// update next block's previous pointer
-	if ((*bd)->next_)
+	if ((*i_bd)->next)
 	{
-		((*bd)->next_)->previous_ = (*bd)->previous_;
+		((*i_bd)->next)->previous = (*i_bd)->previous;
 	}
 
 	// nullptrify current block's pointers
-	(*bd)->previous_ = nullptr;
-	(*bd)->next_ = nullptr;
+	(*i_bd)->previous = nullptr;
+	(*i_bd)->next = nullptr;
 }
 
 #ifdef BUILD_DEBUG
-bool BlockAllocator::CheckMemoryOverwrite(BD* bd) const
+bool BlockAllocator::CheckMemoryOverwrite(BD* i_bd) const
 {
 	// validate input
-	ASSERT(bd != nullptr);
+	ASSERT(i_bd != nullptr);
 	uint8_t lower_byte_counter = 0, upper_byte_counter = 0;
 	for (uint8_t i = 0; i < DEFAULT_GUARDBAND_SIZE; ++i)
 	{
 		// check lower guardband
-		lower_byte_counter += (*(bd->block_pointer_ + i) == GUARDBAND_FILL) ? 1 : 0;
+		lower_byte_counter += (*(i_bd->block_pointer + i) == GUARDBAND_FILL) ? 1 : 0;
 
 		// check upper guardband
-		upper_byte_counter += (*(bd->block_pointer_ + DEFAULT_GUARDBAND_SIZE + bd->user_size_ + i) == GUARDBAND_FILL) ? 1 : 0;
+		upper_byte_counter += (*(i_bd->block_pointer + DEFAULT_GUARDBAND_SIZE + i_bd->user_size + i) == GUARDBAND_FILL) ? 1 : 0;
 	}
 
 	bool found_overwrite = !(lower_byte_counter >= DEFAULT_GUARDBAND_SIZE && upper_byte_counter >= DEFAULT_GUARDBAND_SIZE);
@@ -296,12 +299,12 @@ bool BlockAllocator::CheckMemoryOverwrite(BD* bd) const
 }
 #endif
 
-void* BlockAllocator::Alloc(const size_t size, const size_t alignment)
+void* BlockAllocator::Alloc(const size_t i_size, const size_t i_alignment)
 {
 	// size should be greater than zero!
-	ASSERT(size > 0);
+	ASSERT(i_size > 0);
 	// alignment should be power of two!
-	ASSERT((alignment & (alignment - 1)) == 0);
+	ASSERT((i_alignment & (i_alignment - 1)) == 0);
 
 #ifdef BUILD_DEBUG
 	const size_t	guardband_size = DEFAULT_GUARDBAND_SIZE;
@@ -318,38 +321,38 @@ void* BlockAllocator::Alloc(const size_t size, const size_t alignment)
 	while (free_bd != nullptr)
 	{
 		// check if this block is big enough
-		if (size <= free_bd->block_size_)
+		if (i_size <= free_bd->block_size)
 		{
 			// calculate the new address of the new block
-			uint8_t*				new_block_pointer = free_bd->block_pointer_ + free_bd->block_size_ - size_of_BD_ - guardband_size * 2 - size;
-			const size_t			alignment_offset = reinterpret_cast<uintptr_t>(new_block_pointer + size_of_BD_ + guardband_size) & (alignment - 1);
+			uint8_t*				new_block_pointer = free_bd->block_pointer + free_bd->block_size - size_of_BD_ - guardband_size * 2 - i_size;
+			const size_t			alignment_offset = reinterpret_cast<uintptr_t>(new_block_pointer + size_of_BD_ + guardband_size) & (i_alignment - 1);
 
 			// check if this block needs to be fragmented
-			if ((size_of_BD_ + guardband_size * 2 + size + alignment_offset + MAX_EXTRA_MEMORY) <= free_bd->block_size_)
+			if ((size_of_BD_ + guardband_size * 2 + i_size + alignment_offset + MAX_EXTRA_MEMORY) <= free_bd->block_size)
 			{
 				// block is much bigger than we need so we'll fragment it
-				new_block_pointer = free_bd->block_pointer_ + free_bd->block_size_ - size_of_BD_ - guardband_size * 2 - size - alignment_offset;
+				new_block_pointer = free_bd->block_pointer + free_bd->block_size - size_of_BD_ - guardband_size * 2 - i_size - alignment_offset;
 
 				// initialize the new block's descriptor
 				new_bd = reinterpret_cast<BD*>(new_block_pointer);
-				new_bd->block_pointer_ = new_block_pointer + size_of_BD_;
-				new_bd->block_size_ = size + alignment_offset + guardband_size * 2;
+				new_bd->block_pointer = new_block_pointer + size_of_BD_;
+				new_bd->block_size = i_size + alignment_offset + guardband_size * 2;
 #ifdef BUILD_DEBUG
-				new_bd->id_ = descriptor_counter_++;
+				new_bd->id = descriptor_counter_++;
 				descriptor_counter_ = (descriptor_counter_ >= std::numeric_limits<uint32_t>::max() ? 0 : descriptor_counter_);
 #endif
 
 				// splice the free block
-				free_bd->block_size_ -= (size_of_BD_ + new_bd->block_size_);
+				free_bd->block_size -= (size_of_BD_ + new_bd->block_size);
 
 				// done with the search so break
 				break;
 			}
 			// check to see if this block is big enough to be used as is
-			else if ((size + guardband_size * 2) <= free_bd->block_size_)
+			else if ((i_size + guardband_size * 2) <= free_bd->block_size)
 			{
 				// if we are to use the entire block as is, check to see if it is properly byte aligned 
-				if ((reinterpret_cast<uintptr_t>(free_bd->block_pointer_ + guardband_size) & (alignment - 1)) == 0)
+				if ((reinterpret_cast<uintptr_t>(free_bd->block_pointer + guardband_size) & (i_alignment - 1)) == 0)
 				{
 					// block is slightly bigger so we'll use it whole
 					new_bd = free_bd;
@@ -364,7 +367,7 @@ void* BlockAllocator::Alloc(const size_t size, const size_t alignment)
 		}
 
 		// move to the next descriptor in the free list
-		free_bd = free_bd->next_;
+		free_bd = free_bd->next;
 
 		// have we reached the end of the free list?
 		if (free_bd == nullptr)
@@ -410,37 +413,44 @@ void* BlockAllocator::Alloc(const size_t size, const size_t alignment)
 	// add guardbands
 	for (uint8_t i = 0; i < guardband_size; ++i)
 	{
-		*(new_bd->block_pointer_ + i) = GUARDBAND_FILL;
-		*(new_bd->block_pointer_ + guardband_size + size + i) = GUARDBAND_FILL;
+		*(new_bd->block_pointer + i) = GUARDBAND_FILL;
+		*(new_bd->block_pointer + guardband_size + i_size + i) = GUARDBAND_FILL;
 	}
 
 	// save the size requested by the user for future use
-	new_bd->user_size_ = size;
+	new_bd->user_size = i_size;
 #endif
 
 	// add the descriptor to the user list
 	AddToList(&user_list_head_, &new_bd, false);
 
-	return (new_bd->block_pointer_ + guardband_size);
+#ifdef BUILD_DEBUG
+    // save diagnostic information
+    ++stats_.total_allocated;
+    ++stats_.total_outstanding;
+    stats_.max_outstanding = stats_.max_outstanding < stats_.total_outstanding ? stats_.total_outstanding : stats_.max_outstanding;
+#endif
+
+	return (new_bd->block_pointer + guardband_size);
 }
 
 // Deallocate a block of memory
-bool BlockAllocator::Free(void* pointer)
+bool BlockAllocator::Free(void* i_pointer)
 {
 	// validate input
-	ASSERT(pointer != nullptr);
+	ASSERT(i_pointer != nullptr);
 
 	// return if this allocator does not contain this pointer
-	if (!Contains(pointer))
+	if (!Contains(i_pointer))
 	{
 		return false;
 	}
 
 	// calculate the address of the descriptor
 #ifdef BUILD_DEBUG
-	BD* bd = reinterpret_cast<BD*>(static_cast<uint8_t*>(pointer) - DEFAULT_GUARDBAND_SIZE - size_of_BD_);
+	BD* bd = reinterpret_cast<BD*>(static_cast<uint8_t*>(i_pointer) - DEFAULT_GUARDBAND_SIZE - size_of_BD_);
 #else
-	BD* bd = reinterpret_cast<BD*>(static_cast<uint8_t*>(pointer) - size_of_BD_);
+	BD* bd = reinterpret_cast<BD*>(static_cast<uint8_t*>(i_pointer) - size_of_BD_);
 #endif
 
 #ifdef BUILD_DEBUG
@@ -456,11 +466,17 @@ bool BlockAllocator::Free(void* pointer)
 	ClearBlock(bd, DEAD_FILL);
 
 	// reset the user size
-	bd->user_size_ = 0;
+	bd->user_size = 0;
 #endif
 
 	// add the descriptor to the free list
 	AddToList(&free_list_head_, &bd, true);
+
+#ifdef BUILD_DEBUG
+    // save diagnostic information
+    ++stats_.total_freed;
+    --stats_.total_outstanding;
+#endif
 
 	return true;
 }
@@ -475,41 +491,41 @@ void BlockAllocator::Defragment()
 #endif
 
 	BD* curr = free_list_head_;
-	while (curr != nullptr && curr->next_ != nullptr)
+	while (curr != nullptr && curr->next != nullptr)
 	{
 		// check if next block is contiguous to current block
-		if (curr->block_pointer_ + curr->block_size_ == curr->next_->block_pointer_ - size_of_BD_)
+		if (curr->block_pointer + curr->block_size == curr->next->block_pointer - size_of_BD_)
 		{
-			BD* next_bd = curr->next_;
+			BD* next_bd = curr->next;
 
 #ifdef BUILD_DEBUG
-			VERBOSE("Merging %zu bytes from block-%d & block-%d", (next_bd->block_size_ + size_of_BD_), curr->id_, next_bd->id_);
+			VERBOSE("Merging %zu bytes from block-%d & block-%d", (next_bd->block_size + size_of_BD_), curr->id, next_bd->id);
 #endif
 			// update current descriptor's block size
-			curr->block_size_ += (next_bd->block_size_ + size_of_BD_);
+			curr->block_size += (next_bd->block_size + size_of_BD_);
 
 #ifdef BUILD_DEBUG
-			bytes_combined += (next_bd->block_size_ + size_of_BD_);
+			bytes_combined += (next_bd->block_size + size_of_BD_);
 #endif
 			// update current descriptor's next & previous pointers
-			curr->next_ = next_bd->next_;
-			if (next_bd->next_)
+			curr->next = next_bd->next;
+			if (next_bd->next)
 			{
-				(next_bd->next_)->previous_ = curr;
+				(next_bd->next)->previous = curr;
 			}
 
 			// clear next descriptor
-			next_bd->next_ = nullptr;
-			next_bd->previous_ = nullptr;
-			next_bd->block_pointer_ = nullptr;
-			next_bd->block_size_ = 0;
+			next_bd->next = nullptr;
+			next_bd->previous = nullptr;
+			next_bd->block_pointer = nullptr;
+			next_bd->block_size = 0;
 
 #ifdef BUILD_DEBUG
 			++num_blocks_combined;
 #endif
 			continue;
 		}
-		curr = curr->next_;
+		curr = curr->next;
 	}
 
 #ifdef BUILD_DEBUG
@@ -525,28 +541,28 @@ void BlockAllocator::Defragment()
 }
 
 // Query whether a given pointer is a user allocation
-bool BlockAllocator::IsAllocated(const void* pointer) const
+bool BlockAllocator::IsAllocated(const void* i_pointer) const
 {
 	// validate input
-	ASSERT(pointer);
+	ASSERT(i_pointer);
 
 	BD* bd = user_list_head_;
 	while (bd != nullptr)
 	{
 		// check if the pointer passed in exists within each descriptor
-		if ((static_cast<const uint8_t*>(pointer) >= bd->block_pointer_ && static_cast<const uint8_t*>(pointer) < (bd->block_pointer_ + bd->block_size_)))
+		if ((static_cast<const uint8_t*>(i_pointer) >= bd->block_pointer && static_cast<const uint8_t*>(i_pointer) < (bd->block_pointer + bd->block_size)))
 		{
 			return true;
 		}
-		bd = bd->next_;
+		bd = bd->next;
 	}
 	return false;
 }
 
-const size_t BlockAllocator::GetLargestFreeBlockSize(const size_t alignment) const
+const size_t BlockAllocator::GetLargestFreeBlockSize(const size_t i_alignment) const
 {
 	// alignment should be power of two!
-	ASSERT((alignment & (alignment - 1)) == 0);
+	ASSERT((i_alignment & (i_alignment - 1)) == 0);
 
 	size_t largest_size = 0;
 	// loop the free list
@@ -554,21 +570,31 @@ const size_t BlockAllocator::GetLargestFreeBlockSize(const size_t alignment) con
 	while (bd != nullptr)
 	{
 		// check actual block size not user block size
-		if (bd->block_size_ > largest_size)
+		if (bd->block_size > largest_size)
 		{
-			largest_size = bd->block_size_;
+			largest_size = bd->block_size;
 		}
-		bd = bd->next_;
+		bd = bd->next;
 	}
 
 #ifdef BUILD_DEBUG
-	return largest_size - alignment - DEFAULT_GUARDBAND_SIZE * 2;
+	return largest_size - i_alignment - DEFAULT_GUARDBAND_SIZE * 2;
 #else
-	return largest_size - alignment;
+	return largest_size - i_alignment;
 #endif
 }
 
 #ifdef BUILD_DEBUG
+void BlockAllocator::DumpStatistics() const
+{
+    VERBOSE("---------- %s ----------", __FUNCTION__);
+    VERBOSE("Dumping usage statistics for BlockAllocator-%d:", id_);
+    VERBOSE("Total allocations:%zu", stats_.total_allocated);
+    VERBOSE("Total frees:%zu", stats_.total_freed);
+    VERBOSE("Highwater mark:%zu", stats_.max_outstanding);
+    VERBOSE("---------- END ----------");
+}
+
 void BlockAllocator::PrintAllDescriptors() const
 {
 	PrintFreeDescriptors();
@@ -582,9 +608,9 @@ void BlockAllocator::PrintFreeDescriptors() const
 	{
 		size_t count = 0;
 		VERBOSE("FREE:");
-		for (BD* bd = free_list_head_; bd != nullptr; bd = bd->next_)
+		for (BD* bd = free_list_head_; bd != nullptr; bd = bd->next)
 		{
-			VERBOSE("BD.id:%d size:%zu", bd->id_, bd->block_size_);
+			VERBOSE("BD.id:%d size:%zu", bd->id, bd->block_size);
 			++count;
 		}
 		VERBOSE("FREE LIST SIZE:%d", count);
@@ -603,9 +629,9 @@ void BlockAllocator::PrintUsedDescriptors() const
 	{
 		size_t count = 0;
 		VERBOSE("USER:");
-		for (BD* bd = user_list_head_; bd != nullptr; bd = bd->next_)
+		for (BD* bd = user_list_head_; bd != nullptr; bd = bd->next)
 		{
-			VERBOSE("BD.id:%d size:%zu", bd->id_, bd->block_size_);
+			VERBOSE("BD.id:%d size:%zu", bd->id, bd->block_size);
 			++count;
 		}
 		VERBOSE("USER LIST SIZE:%d", count);
