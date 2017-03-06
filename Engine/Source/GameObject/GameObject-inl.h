@@ -3,18 +3,29 @@
 namespace engine {
 namespace gameobject {
 
-inline engine::memory::SharedPointer<GameObject> GameObject::Create(const engine::math::Transform& i_transform)
+inline engine::memory::SharedPointer<GameObject> GameObject::Create(const engine::math::Rect& i_aabb, const engine::math::Transform& i_transform)
 {
-	return engine::memory::SharedPointer<GameObject>(new GameObject(i_transform));
+	return engine::memory::SharedPointer<GameObject>(new GameObject(i_aabb, i_transform));
 }
 
 inline GameObject& GameObject::operator=(const GameObject& i_game_object)
 {
 	if (this != &i_game_object)
 	{
+		aabb_ = i_game_object.aabb_;
 		transform_ = i_game_object.transform_;
 	}
 	return *this;
+}
+
+inline const engine::math::Rect& GameObject::GetAABB() const
+{
+	return aabb_;
+}
+
+inline void GameObject::SetAABB(const engine::math::Rect& i_aabb)
+{
+	aabb_ = i_aabb;
 }
 
 inline const engine::math::Transform& GameObject::GetTransform() const

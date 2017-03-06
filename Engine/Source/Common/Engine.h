@@ -5,7 +5,7 @@ namespace engine {
 
 // TODO: Find a better place for this
 // Currently it is publicly accessible
-static bool quit_requested_;
+static bool shutdown_requested_;
 
 bool StartUp();
 
@@ -14,7 +14,7 @@ void Run();
 void Shutdown();
 
 // TODO: Find a better place for this
-void RequestQuit();
+void RequestShutdown();
 
 } // namespace engine
 

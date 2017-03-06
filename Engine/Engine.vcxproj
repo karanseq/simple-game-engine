@@ -91,8 +91,8 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;BUILD_DEBUG;VERBOSITY_LEVEL=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;BUILD_DEBUG;VERBOSITY_LEVEL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source;$(SolutionDir)External\GLib\;$(SolutionDir)External\Lua\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -154,19 +154,47 @@
     <ClInclude Include="Source\Common\HelperMacros.h" />
     <ClInclude Include="Source\Data\BitArray-inl.h" />
     <ClInclude Include="Source\Data\BitArray.h" />
+    <ClInclude Include="Source\Data\HashedString-inl.h" />
+    <ClInclude Include="Source\Data\HashedString.h" />
+    <ClInclude Include="Source\Data\PooledString-inl.h" />
+    <ClInclude Include="Source\Data\PooledString.h" />
+    <ClInclude Include="Source\Data\StringPool-inl.h" />
+    <ClInclude Include="Source\Data\StringPool.h" />
+    <ClInclude Include="Source\GameObject\Actor-inl.h" />
+    <ClInclude Include="Source\GameObject\Actor.h" />
+    <ClInclude Include="Source\GameObject\ActorCreator.h" />
     <ClInclude Include="Source\GameObject\GameObject-inl.h" />
     <ClInclude Include="Source\GameObject\GameObject.h" />
-    <ClInclude Include="Source\GameObject\IdentityComponent-inl.h" />
-    <ClInclude Include="Source\GameObject\InterfaceGameObjectController.h" />
-    <ClInclude Include="Source\GameObject\IdentityComponent.h" />
+    <ClInclude Include="Source\Input\Input.h" />
+    <ClInclude Include="Source\Input\KeyboardEvent-inl.h" />
+    <ClInclude Include="Source\Input\KeyboardEvent.h" />
+    <ClInclude Include="Source\Input\KeyboardEventDispatcher-inl.h" />
+    <ClInclude Include="Source\Input\KeyboardEventDispatcher.h" />
+    <ClInclude Include="Source\Jobs\CreateActorCacheFileDataJob-inl.h" />
+    <ClInclude Include="Source\Jobs\CreateActorCacheFileDataJob.h" />
+    <ClInclude Include="Source\Jobs\CreateActorDeleteFileDataJob-inl.h" />
+    <ClInclude Include="Source\Jobs\CreateActorDeleteFileDataJob.h" />
+    <ClInclude Include="Source\Jobs\FileLoadJob-inl.h" />
+    <ClInclude Include="Source\Jobs\FileLoadJob.h" />
+    <ClInclude Include="Source\Jobs\InterfaceJob.h" />
+    <ClInclude Include="Source\Jobs\JobQueue-inl.h" />
+    <ClInclude Include="Source\Jobs\JobQueue.h" />
+    <ClInclude Include="Source\Jobs\JobSystem.h" />
+    <ClInclude Include="Source\Jobs\Worker.h" />
     <ClInclude Include="Source\Logger\Logger.h" />
     <ClInclude Include="Source\Math\MathUtil.h" />
+    <ClInclude Include="Source\Math\Rect-inl.h" />
+    <ClInclude Include="Source\Math\Rect.h" />
+    <ClInclude Include="Source\Math\Size-inl.h" />
+    <ClInclude Include="Source\Math\Size.h" />
     <ClInclude Include="Source\Math\Transform-inl.h" />
     <ClInclude Include="Source\Math\Transform.h" />
     <ClInclude Include="Source\Math\Vec2D-inl.h" />
     <ClInclude Include="Source\Math\Vec2D.h" />
     <ClInclude Include="Source\Math\Vec3D-inl.h" />
     <ClInclude Include="Source\Math\Vec3D.h" />
+    <ClInclude Include="Source\Memory\AllocationCounter-inl.h" />
+    <ClInclude Include="Source\Memory\AllocationCounter.h" />
     <ClInclude Include="Source\Memory\AllocatorUtil.h" />
     <ClInclude Include="Source\Memory\BlockAllocator-inl.h" />
     <ClInclude Include="Source\Memory\BlockAllocator.h" />
@@ -184,28 +212,55 @@
     <ClInclude Include="Source\Physics\Physics.h" />
     <ClInclude Include="Source\Physics\PhysicsObject-inl.h" />
     <ClInclude Include="Source\Physics\PhysicsObject.h" />
+    <ClInclude Include="Source\Renderer\RenderableObject-inl.h" />
+    <ClInclude Include="Source\Renderer\RenderableObject.h" />
+    <ClInclude Include="Source\Renderer\Renderer-inl.h" />
+    <ClInclude Include="Source\Renderer\Renderer.h" />
     <ClInclude Include="Source\Time\InterfaceTickable.h" />
     <ClInclude Include="Source\Time\TimerUtil.h" />
     <ClInclude Include="Source\Time\Updater-inl.h" />
     <ClInclude Include="Source\Time\Updater.h" />
+    <ClInclude Include="Source\Util\FileUtils-inl.h" />
+    <ClInclude Include="Source\Util\FileUtils.h" />
+    <ClInclude Include="Source\Util\LuaHelper.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Common\Private\Engine.cpp" />
     <ClCompile Include="Source\Data\Private\BitArray.cpp" />
-    <ClCompile Include="Source\GameObject\Private\IdentityComponent.cpp" />
+    <ClCompile Include="Source\Data\Private\HashedString.cpp" />
+    <ClCompile Include="Source\Data\Private\PooledString.cpp" />
+    <ClCompile Include="Source\Data\Private\StringPool.cpp" />
+    <ClCompile Include="Source\GameObject\Private\Actor.cpp" />
+    <ClCompile Include="Source\GameObject\Private\ActorCreator.cpp" />
+    <ClCompile Include="Source\Input\Private\Input.cpp" />
+    <ClCompile Include="Source\Input\Private\KeyboardEvent.cpp" />
+    <ClCompile Include="Source\Input\Private\KeyboardEventDispatcher.cpp" />
+    <ClCompile Include="Source\Jobs\Private\CreateActorCacheFileDataJob.cpp" />
+    <ClCompile Include="Source\Jobs\Private\CreateActorDeleteFileDataJob.cpp" />
+    <ClCompile Include="Source\Jobs\Private\FileLoadJob.cpp" />
+    <ClCompile Include="Source\Jobs\Private\JobQueue.cpp" />
+    <ClCompile Include="Source\Jobs\Private\JobSystem.cpp" />
+    <ClCompile Include="Source\Jobs\Private\Worker.cpp" />
     <ClCompile Include="Source\Logger\Private\Logger.win32.cpp" />
+    <ClCompile Include="Source\Math\Private\Rect.cpp" />
+    <ClCompile Include="Source\Math\Private\Size.cpp" />
     <ClCompile Include="Source\Math\Private\Transform.cpp" />
     <ClCompile Include="Source\Math\Private\Vec2D.cpp" />
     <ClCompile Include="Source\Math\Private\Vec3D.cpp" />
+    <ClCompile Include="Source\Memory\Private\AllocationCounter.cpp" />
     <ClCompile Include="Source\Memory\Private\AllocatorUtil.cpp" />
     <ClCompile Include="Source\Memory\Private\BlockAllocator.cpp" />
     <ClCompile Include="Source\Memory\Private\AllocatorOverrides.cpp" />
     <ClCompile Include="Source\Memory\Private\FixedSizeAllocator.cpp" />
     <ClCompile Include="Source\Physics\Private\Physics.cpp" />
     <ClCompile Include="Source\Physics\Private\PhysicsObject.cpp" />
+    <ClCompile Include="Source\Renderer\Private\RenderableObject.cpp" />
+    <ClCompile Include="Source\Renderer\Private\Renderer.cpp" />
     <ClCompile Include="Source\Time\Private\TimerUtil.cpp" />
     <ClCompile Include="Source\Time\Private\TimerUtil.win32.cpp" />
     <ClCompile Include="Source\Time\Private\Updater.cpp" />
+    <ClCompile Include="Source\Util\Private\FileUtils.cpp" />
+    <ClCompile Include="Source\Util\Private\LuaHelper.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

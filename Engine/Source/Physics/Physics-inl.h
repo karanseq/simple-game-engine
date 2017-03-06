@@ -15,10 +15,27 @@ inline Physics* Physics::Get()
 	return Physics::instance_;
 }
 
+inline engine::memory::SharedPointer<PhysicsObject> Physics::CreatePhysicsObject(const engine::memory::WeakPointer<engine::gameobject::GameObject>& i_game_object, float i_mass, float i_drag)
+{
+	// validate input
+	ASSERT(i_game_object);
+
+	// create a new physics object
+	engine::memory::SharedPointer<PhysicsObject> physics_object = PhysicsObject::Create(i_game_object, i_mass, i_drag);
+
+	// add it to the list
+	physics_objects_.push_back(physics_object);
+	++num_physics_objects_;
+
+	return physics_object;
+}
+
 inline void Physics::AddPhysicsObject(const engine::memory::SharedPointer<PhysicsObject>& i_physics_object)
 {
 	// validate input
 	ASSERT(i_physics_object);
+
+	std::lock_guard<std::mutex> lock(physics_mutex_);
 
 	// check if this object already exists
 	if (std::find(physics_objects_.begin(), physics_objects_.end(), i_physics_object) != physics_objects_.end())
@@ -37,6 +54,8 @@ inline void Physics::RemovePhysicsObject(const engine::memory::SharedPointer<Phy
 	ASSERT(i_physics_object);
 	// can't remove an object if there are none
 	ASSERT(num_physics_objects_ > 0);
+
+	std::lock_guard<std::mutex> lock(physics_mutex_);
 
 	// check if this object exists
 	auto it = std::find(physics_objects_.begin(), physics_objects_.end(), i_physics_object);

@@ -24,7 +24,7 @@ namespace physics {
 class PhysicsObject
 {
 public:
-	inline static engine::memory::SharedPointer<engine::physics::PhysicsObject> Create(const engine::memory::WeakPointer<engine::gameobject::GameObject>& i_game_object, float i_mass = DEFAULT_MASS, float i_drag = DEFAULT_COEFF_DRAG);
+	inline static engine::memory::SharedPointer<PhysicsObject> Create(const engine::memory::WeakPointer<engine::gameobject::GameObject>& i_game_object, float i_mass = DEFAULT_MASS, float i_drag = DEFAULT_COEFF_DRAG);
 	~PhysicsObject();
 
 	// copy constructor
