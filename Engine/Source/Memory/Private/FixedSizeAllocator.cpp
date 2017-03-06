@@ -4,6 +4,7 @@
 #include "Assert\Assert.h"
 #include "Data\BitArray.h"
 #include "Logger\Logger.h"
+#include "Memory\AllocationCounter.h"
 #include "Memory\AllocatorUtil.h"
 #include "Memory\BlockAllocator.h"
 
@@ -45,6 +46,9 @@ FixedSizeAllocator::FixedSizeAllocator(void* i_memory, const size_t i_total_bloc
 	id_ = FixedSizeAllocator::counter_++;
 	memset(block_, CLEAN_FILL, total_block_size_);
 	VERBOSE("FixedSizeAllocator-%d created with %zu blocks of size:%zu", id_, num_blocks_, fixed_block_size_);
+
+	// initialize diagnostic information
+	stats_.available_memory_size = total_block_size_;
 #endif
 }
 
@@ -104,7 +108,9 @@ void FixedSizeAllocator::Destroy(FixedSizeAllocator* i_allocator)
     i_allocator->DumpStatistics();
 
 	uint8_t id = i_allocator->id_;
-	VERBOSE("FixedSizeAllocator-%d destroyed", id);
+	LOG("FixedSizeAllocator-%d destroyed", id);
+#else
+	LOG("FixedSizeAllocator with fixed_block_size:%zu destroyed", i_allocator->fixed_block_size_);
 #endif
 
 	block_allocator->Free(i_allocator);
@@ -224,6 +230,8 @@ void* FixedSizeAllocator::Alloc()
 
 void* FixedSizeAllocator::Alloc(const size_t i_size)
 {
+	std::lock_guard<std::mutex> lock(allocator_mutex_);
+
 	// validate input
 	ASSERT(i_size <= fixed_block_size_);
 
@@ -272,10 +280,14 @@ void* FixedSizeAllocator::Alloc(const size_t i_size)
 		*(block + size_type + guardband_size + i_size + i) = GUARDBAND_FILL;
 	}
 
-    // save diagnostic information
-    ++stats_.total_allocated;
-    ++stats_.total_outstanding;
-    stats_.max_outstanding = stats_.max_outstanding < stats_.total_outstanding ? stats_.total_outstanding : stats_.max_outstanding;
+    // update diagnostic information
+    ++stats_.num_allocated;
+    ++stats_.num_outstanding;
+    stats_.max_num_outstanding = stats_.max_num_outstanding < stats_.num_outstanding ? stats_.num_outstanding : stats_.max_num_outstanding;
+	stats_.allocated_memory_size += (guardband_size * 2 + size_type + fixed_block_size_);
+	stats_.available_memory_size -= (guardband_size * 2 + size_type + fixed_block_size_);
+	stats_.max_allocated_memory_size = stats_.max_allocated_memory_size < stats_.allocated_memory_size ? stats_.allocated_memory_size : stats_.max_allocated_memory_size;
+	COUNT_ALLOC(i_size);
 #endif
 
 	return (block + size_type + guardband_size);
@@ -283,6 +295,8 @@ void* FixedSizeAllocator::Alloc(const size_t i_size)
 
 bool FixedSizeAllocator::Free(void* i_pointer)
 {
+	std::lock_guard<std::mutex> lock(allocator_mutex_);
+
 	// validate input
 	ASSERT(i_pointer != nullptr);
 
@@ -351,9 +365,11 @@ bool FixedSizeAllocator::Free(void* i_pointer)
 	block_state_->ClearBit(bit_index);
 
 #ifdef BUILD_DEBUG
-    // save diagnostic information
-    ++stats_.total_freed;
-    --stats_.total_outstanding;
+    // update diagnostic information
+    ++stats_.num_freed;
+    --stats_.num_outstanding;
+	stats_.allocated_memory_size -= (guardband_size * 2 + size_type + fixed_block_size_);
+	stats_.available_memory_size += (guardband_size * 2 + size_type + fixed_block_size_);
 #endif
 
 	return true;
@@ -408,12 +424,12 @@ bool FixedSizeAllocator::IsAllocated(const void* i_pointer) const
 #ifdef BUILD_DEBUG
 void FixedSizeAllocator::DumpStatistics() const
 {
-    VERBOSE("---------- %s ----------", __FUNCTION__);
-    VERBOSE("Dumping usage statistics for FixedSizeAllocator-%d with fixed block size of %zu bytes:", id_, fixed_block_size_);
-    VERBOSE("Total allocations:%zu", stats_.total_allocated);
-    VERBOSE("Total frees:%zu", stats_.total_freed);
-    VERBOSE("Highwater mark:%zu", stats_.max_outstanding);
-    VERBOSE("---------- END ----------");
+	LOG("---------- %s ----------", __FUNCTION__);
+	LOG("Dumping usage statistics for FixedSizeAllocator-%d with fixed block size of %zu bytes:", id_, fixed_block_size_);
+	LOG("Total allocations:%zu", stats_.num_allocated);
+	LOG("Total frees:%zu", stats_.num_freed);
+	LOG("Highwater mark:%zu allocations and %zu bytes", stats_.max_num_outstanding, stats_.max_allocated_memory_size);
+	LOG("---------- END ----------");
 }
 #endif
 

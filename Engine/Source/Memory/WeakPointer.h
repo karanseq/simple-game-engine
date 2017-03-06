@@ -14,6 +14,9 @@ public:
 	WeakPointer() : object_(nullptr),
 		ref_counter_(nullptr)
 	{}
+	WeakPointer(std::nullptr_t) : object_(nullptr),
+		ref_counter_(nullptr)
+	{}
 	~WeakPointer()
 	{
 		Release();

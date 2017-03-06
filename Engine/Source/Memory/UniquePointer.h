@@ -12,7 +12,11 @@ template<class T>
 class UniquePointer
 {
 public:
-    UniquePointer(T* i_object = nullptr) : object_(i_object)
+	UniquePointer() : object_(nullptr)
+	{}
+	UniquePointer(std::nullptr_t) : object_(nullptr)
+	{}
+    UniquePointer(T* i_object) : object_(i_object)
     {}
     ~UniquePointer()
     {

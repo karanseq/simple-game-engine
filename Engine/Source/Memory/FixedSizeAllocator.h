@@ -3,6 +3,7 @@
 
 // library includes
 #include <stdint.h>
+#include <mutex>
 
 // engine includes
 #include "AllocatorUtil.h"
@@ -78,6 +79,7 @@ public:
 #ifdef BUILD_DEBUG
 	inline unsigned int GetID() const;
     void DumpStatistics() const;
+	inline const AllocatorStatistics& GetStatistics() const;
 #endif
 
 private:
@@ -87,6 +89,8 @@ private:
 	size_t											num_blocks_;											// total number of fixed blocks
 	BlockAllocator*									block_allocator_;										// the block allocator used for the initial allocation
 	engine::data::BitArray*							block_state_;											// a bit array to maintain the state (available = 0, allocated = 1) of each block of memory
+
+	std::mutex										allocator_mutex_;										// makes this allocator thread safe
 
 #ifdef BUILD_DEBUG
 	uint8_t											id_;													// an id to keep track of this allocator in debug mode

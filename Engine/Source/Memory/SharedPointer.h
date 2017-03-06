@@ -15,7 +15,15 @@ template<class T>
 class SharedPointer
 {
 public:
-	SharedPointer(T* i_object = nullptr) : object_(i_object),
+	SharedPointer() : object_(nullptr),
+		ref_counter_(nullptr)
+	{};
+
+	SharedPointer(std::nullptr_t i_object) : object_(nullptr),
+		ref_counter_(nullptr)
+	{};
+
+	explicit SharedPointer(T* i_object) : object_(i_object),
 		ref_counter_(nullptr)
 	{
 		if (object_)
@@ -23,6 +31,7 @@ public:
 			ref_counter_ = new RefCounter(1);
 		}
 	};
+
 	~SharedPointer()
 	{
 		Release();
@@ -41,7 +50,7 @@ public:
 		i_copy.ref_counter_ = nullptr;
 	}
 
-	SharedPointer(const WeakPointer<T>& i_weak_pointer) : object_(i_weak_pointer.HasExpired() ? nullptr : i_weak_pointer.object_),
+	explicit SharedPointer(const WeakPointer<T>& i_weak_pointer) : object_(i_weak_pointer.HasExpired() ? nullptr : i_weak_pointer.object_),
 		ref_counter_(i_weak_pointer.HasExpired() ? nullptr : i_weak_pointer.ref_counter_)
 	{
 		Acquire();

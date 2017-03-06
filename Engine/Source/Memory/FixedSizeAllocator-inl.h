@@ -71,5 +71,12 @@ namespace memory {
 		return num_blocks_;
 	}
 
+#ifdef BUILD_DEBUG
+	inline const AllocatorStatistics& FixedSizeAllocator::GetStatistics() const
+	{
+		return stats_;
+	}
+#endif
+
 } // namespace memory
 } // namespace engine

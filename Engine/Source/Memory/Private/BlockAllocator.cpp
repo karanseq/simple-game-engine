@@ -8,17 +8,19 @@
 // engine includes
 #include "Assert\Assert.h"
 #include "Logger\Logger.h"
+#include "Memory\AllocationCounter.h"
 #include "Memory\AllocatorUtil.h"
 
 namespace engine {
 namespace memory {
 
 // initialize static members
-size_t				BlockAllocator::size_of_BD_ = sizeof(BD);
-BlockAllocator*		BlockAllocator::available_allocators_[MAX_BLOCK_ALLOCATORS] = { nullptr };
+const size_t				BlockAllocator::DEFAULT_ALLOCATOR_SIZE = 10 * 1024 * 1024;
+size_t						BlockAllocator::size_of_BD_ = sizeof(BD);
+BlockAllocator*				BlockAllocator::available_allocators_[MAX_BLOCK_ALLOCATORS] = { nullptr };
 
 #ifdef BUILD_DEBUG
-uint8_t				BlockAllocator::counter_ = 0;
+uint8_t						BlockAllocator::counter_ = 0;
 #endif
 
 BlockAllocator::BlockAllocator(void* i_memory, size_t i_block_size) : block_(static_cast<uint8_t*>(i_memory)),
@@ -35,6 +37,9 @@ BlockAllocator::BlockAllocator(void* i_memory, size_t i_block_size) : block_(sta
 	id_ = BlockAllocator::counter_++;
 	memset(block_, CLEAN_FILL, total_block_size_);
 	VERBOSE("BlockAllocator-%d created with size:%zu", id_, total_block_size_);
+
+	// initialize diagnostic information
+	stats_.available_memory_size = total_block_size_;
 #endif
 
 	InitFirstBlockDescriptor();
@@ -44,7 +49,6 @@ BlockAllocator* BlockAllocator::Create(void* i_memory, size_t i_block_size)
 {
 	// validate input
 	ASSERT(i_memory);
-	ASSERT(i_block_size > 0);
 	ASSERT(i_block_size > (sizeof(BlockAllocator)));
 
 	// add the allocator to the start of the aligned memory block
@@ -76,7 +80,9 @@ void BlockAllocator::Destroy(BlockAllocator* i_allocator)
     // dump statistics
     i_allocator->DumpStatistics();
 
-	VERBOSE("BlockAllocator-%d destroyed", i_allocator->id_);
+	LOG("BlockAllocator-%d destroyed", i_allocator->id_);
+#else
+	LOG("BlockAllocator destroyed");
 #endif
 }
 
@@ -91,7 +97,7 @@ BlockAllocator* BlockAllocator::GetDefaultAllocator()
 
 void BlockAllocator::CreateDefaultAllocator()
 {
-	size_t default_block_size = 1024 * 1024;
+	size_t default_block_size = DEFAULT_ALLOCATOR_SIZE;
 
 	// allocate aligned memory for the default allocator
 	void* default_allocator_memory = _aligned_malloc(default_block_size, 4);
@@ -301,6 +307,8 @@ bool BlockAllocator::CheckMemoryOverwrite(BD* i_bd) const
 
 void* BlockAllocator::Alloc(const size_t i_size, const size_t i_alignment)
 {
+	std::lock_guard<std::mutex> lock(allocator_mutex_);
+
 	// size should be greater than zero!
 	ASSERT(i_size > 0);
 	// alignment should be power of two!
@@ -425,10 +433,14 @@ void* BlockAllocator::Alloc(const size_t i_size, const size_t i_alignment)
 	AddToList(&user_list_head_, &new_bd, false);
 
 #ifdef BUILD_DEBUG
-    // save diagnostic information
-    ++stats_.total_allocated;
-    ++stats_.total_outstanding;
-    stats_.max_outstanding = stats_.max_outstanding < stats_.total_outstanding ? stats_.total_outstanding : stats_.max_outstanding;
+    // update diagnostic information
+    ++stats_.num_allocated;
+    ++stats_.num_outstanding;
+    stats_.max_num_outstanding = stats_.max_num_outstanding < stats_.num_outstanding ? stats_.num_outstanding : stats_.max_num_outstanding;
+	stats_.allocated_memory_size += (size_of_BD_ + new_bd->block_size);
+	stats_.available_memory_size -= (size_of_BD_ + new_bd->block_size);
+	stats_.max_allocated_memory_size = stats_.max_allocated_memory_size < stats_.allocated_memory_size ? stats_.allocated_memory_size : stats_.max_allocated_memory_size;
+	COUNT_ALLOC(i_size);
 #endif
 
 	return (new_bd->block_pointer + guardband_size);
@@ -437,6 +449,8 @@ void* BlockAllocator::Alloc(const size_t i_size, const size_t i_alignment)
 // Deallocate a block of memory
 bool BlockAllocator::Free(void* i_pointer)
 {
+	std::lock_guard<std::mutex> lock(allocator_mutex_);
+
 	// validate input
 	ASSERT(i_pointer != nullptr);
 
@@ -473,9 +487,11 @@ bool BlockAllocator::Free(void* i_pointer)
 	AddToList(&free_list_head_, &bd, true);
 
 #ifdef BUILD_DEBUG
-    // save diagnostic information
-    ++stats_.total_freed;
-    --stats_.total_outstanding;
+    // update diagnostic information
+    ++stats_.num_freed;
+    --stats_.num_outstanding;
+	stats_.allocated_memory_size -= (bd->block_size);
+	stats_.available_memory_size += (bd->block_size);
 #endif
 
 	return true;
@@ -587,12 +603,12 @@ const size_t BlockAllocator::GetLargestFreeBlockSize(const size_t i_alignment) c
 #ifdef BUILD_DEBUG
 void BlockAllocator::DumpStatistics() const
 {
-    VERBOSE("---------- %s ----------", __FUNCTION__);
-    VERBOSE("Dumping usage statistics for BlockAllocator-%d:", id_);
-    VERBOSE("Total allocations:%zu", stats_.total_allocated);
-    VERBOSE("Total frees:%zu", stats_.total_freed);
-    VERBOSE("Highwater mark:%zu", stats_.max_outstanding);
-    VERBOSE("---------- END ----------");
+    LOG("---------- %s ----------", __FUNCTION__);
+	LOG("Dumping usage statistics for BlockAllocator-%d:", id_);
+	LOG("Total allocations:%zu", stats_.num_allocated);
+	LOG("Total frees:%zu", stats_.num_freed);
+	LOG("Highwater mark:%zu allocations and %zu bytes", stats_.max_num_outstanding, stats_.max_allocated_memory_size);
+	LOG("---------- END ----------");
 }
 
 void BlockAllocator::PrintAllDescriptors() const

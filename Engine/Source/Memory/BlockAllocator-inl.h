@@ -63,5 +63,12 @@ namespace memory {
 		return num_outstanding_blocks;
 	}
 
+#ifdef BUILD_DEBUG
+	inline const AllocatorStatistics& BlockAllocator::GetStatistics() const
+	{
+		return stats_;
+	}
+#endif
+
 } // namespace memory
 } // namespace engine
