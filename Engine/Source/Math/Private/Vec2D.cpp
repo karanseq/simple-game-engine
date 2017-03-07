@@ -6,47 +6,47 @@
 namespace engine {
 namespace math {
 
-	const Vec2D Vec2D::ZERO(0.0f, 0.0f);
-	const Vec2D Vec2D::UNIT(1.0f, 1.0f);
-	const Vec2D Vec2D::UNIT_X(1.0f, 0.0f);
-	const Vec2D Vec2D::UNIT_Y(0.0f, 1.0f);
+    const Vec2D Vec2D::ZERO(0.0f, 0.0f);
+    const Vec2D Vec2D::UNIT(1.0f, 1.0f);
+    const Vec2D Vec2D::UNIT_X(1.0f, 0.0f);
+    const Vec2D Vec2D::UNIT_Y(0.0f, 1.0f);
 
-	Vec2D::Vec2D(float i_x, float i_y) : x_(i_x),
-		y_(i_y)
-	{}
+    Vec2D::Vec2D(float i_x, float i_y) : x_(i_x),
+        y_(i_y)
+    {}
 
-	Vec2D::Vec2D(const Vec2D& i_copy) : x_(i_copy.x_),
-		y_(i_copy.y_)
-	{}
+    Vec2D::Vec2D(const Vec2D& i_copy) : x_(i_copy.x_),
+        y_(i_copy.y_)
+    {}
 
-	float Vec2D::Length() const
-	{
-		return std::sqrtf(LengthSquared());
-	}
+    float Vec2D::Length() const
+    {
+        return std::sqrtf(LengthSquared());
+    }
 
-	void Vec2D::Normalize()
-	{
-		float length_squared = x_ * x_ + y_ * y_;
+    void Vec2D::Normalize()
+    {
+        float length_squared = x_ * x_ + y_ * y_;
 
-		// return if already normalized
-		if (FuzzyEquals(length_squared, 1.0f))
-		{
-			return;
-		}
+        // return if already normalized
+        if (FuzzyEquals(length_squared, 1.0f))
+        {
+            return;
+        }
 
-		float length = std::sqrtf(length_squared);
-		length = 1.0f / length;
+        float length = std::sqrtf(length_squared);
+        length = 1.0f / length;
 
-		x_ *= length;
-		y_ *= length;
-	}
+        x_ *= length;
+        y_ *= length;
+    }
 
-	Vec2D Vec2D::Normalize() const
-	{
-		Vec2D v(*this);
-		v.Normalize();
-		return v;
-	}
+    Vec2D Vec2D::Normalize() const
+    {
+        Vec2D v(*this);
+        v.Normalize();
+        return v;
+    }
 
 } // namespace math
 } // namespace engine

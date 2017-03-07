@@ -10,16 +10,16 @@ namespace jobs {
 class InterfaceJob
 {
 public:
-	InterfaceJob() {};
-	virtual ~InterfaceJob() {};
+    InterfaceJob() {};
+    virtual ~InterfaceJob() {};
 
-	virtual void DoWork() = 0;
+    virtual void DoWork() = 0;
 
-	inline const engine::data::PooledString& GetName() const { return name_; }
-	inline void SetName(const engine::data::PooledString& i_name) { name_ = i_name; }
+    inline const engine::data::PooledString& GetName() const { return name_; }
+    inline void SetName(const engine::data::PooledString& i_name) { name_ = i_name; }
 
 protected:
-	engine::data::PooledString name_;
+    engine::data::PooledString name_;
 
 }; // class InterfaceJob
 

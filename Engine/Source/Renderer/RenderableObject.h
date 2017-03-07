@@ -8,12 +8,12 @@
 // forward declarations
 namespace GLib {
 namespace Sprites {
-	struct Sprite;
+    struct Sprite;
 }
 }
 namespace engine {
 namespace gameobject {
-	class GameObject;
+    class GameObject;
 }
 }
 
@@ -23,28 +23,28 @@ namespace render {
 class RenderableObject
 {
 public:
-	inline static engine::memory::SharedPointer<RenderableObject> Create(GLib::Sprites::Sprite* i_sprite, const engine::memory::WeakPointer<engine::gameobject::GameObject>& i_game_object);
-	~RenderableObject();
+    inline static engine::memory::SharedPointer<RenderableObject> Create(GLib::Sprites::Sprite* i_sprite, const engine::memory::WeakPointer<engine::gameobject::GameObject>& i_game_object);
+    ~RenderableObject();
 
-	// disable copy constructor & copy assignment operator
-	RenderableObject(const RenderableObject& i_copy) = delete;
-	RenderableObject& operator=(const RenderableObject& i_copy) = delete;
+    // disable copy constructor & copy assignment operator
+    RenderableObject(const RenderableObject& i_copy) = delete;
+    RenderableObject& operator=(const RenderableObject& i_copy) = delete;
 
-	// functions
-	void Render(float i_dt);
+    // functions
+    void Render(float i_dt);
 
-	// accessors and mutators
-	inline GLib::Sprites::Sprite* GetSprite() const;
-	inline void SetSprite(GLib::Sprites::Sprite* i_sprite);
-	inline engine::memory::WeakPointer<engine::gameobject::GameObject> GetGameObject() const;
-	inline void SetGameObject(const engine::memory::WeakPointer<engine::gameobject::GameObject>& i_game_object);
-
-private:
-	RenderableObject(GLib::Sprites::Sprite* i_sprite, const engine::memory::WeakPointer<engine::gameobject::GameObject>& i_game_object);
+    // accessors and mutators
+    inline GLib::Sprites::Sprite* GetSprite() const;
+    inline void SetSprite(GLib::Sprites::Sprite* i_sprite);
+    inline engine::memory::WeakPointer<engine::gameobject::GameObject> GetGameObject() const;
+    inline void SetGameObject(const engine::memory::WeakPointer<engine::gameobject::GameObject>& i_game_object);
 
 private:
-	GLib::Sprites::Sprite*																sprite_;
-	engine::memory::WeakPointer<engine::gameobject::GameObject>							game_object_;
+    RenderableObject(GLib::Sprites::Sprite* i_sprite, const engine::memory::WeakPointer<engine::gameobject::GameObject>& i_game_object);
+
+private:
+    GLib::Sprites::Sprite*                                                              sprite_;
+    engine::memory::WeakPointer<engine::gameobject::GameObject>                         game_object_;
 
 }; // class RenderableObject
 

@@ -9,11 +9,11 @@ namespace memory {
 template<class T>
 inline UniquePointer<T>& UniquePointer<T>::operator=(UniquePointer&& i_copy)
 {
-	if (this != &i_copy)
-	{
-		std::swap(object_, i_copy.object_);
-	}
-	return *this;
+    if (this != &i_copy)
+    {
+        std::swap(object_, i_copy.object_);
+    }
+    return *this;
 }
 
 template<class T>

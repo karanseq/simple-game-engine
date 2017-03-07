@@ -12,55 +12,55 @@ namespace memory {
 
 void CreateAllocators()
 {
-	// initialize the default allocator
-	BlockAllocator* default_allocator = BlockAllocator::GetDefaultAllocator();
+    // initialize the default allocator
+    BlockAllocator* default_allocator = BlockAllocator::GetDefaultAllocator();
 
-	const size_t base_size = sizeof(size_t);
+    const size_t base_size = sizeof(size_t);
 
-	// initialize the fixed size allocators
-	// block size on 32-bit = 8 and on 64-bit = 16
-	FixedSizeAllocator* fsa = FixedSizeAllocator::Create(base_size * 2, 200, default_allocator);
-	FixedSizeAllocator::AddFixedSizeAllocator(fsa);
+    // initialize the fixed size allocators
+    // block size on 32-bit = 8 and on 64-bit = 16
+    FixedSizeAllocator* fsa = FixedSizeAllocator::Create(base_size * 2, 200, default_allocator);
+    FixedSizeAllocator::AddFixedSizeAllocator(fsa);
 
-	// block size on 32-bit = 12 and on 64-bit = 24
-	fsa = FixedSizeAllocator::Create(base_size * 3, 500, default_allocator);
-	FixedSizeAllocator::AddFixedSizeAllocator(fsa);
+    // block size on 32-bit = 12 and on 64-bit = 24
+    fsa = FixedSizeAllocator::Create(base_size * 3, 500, default_allocator);
+    FixedSizeAllocator::AddFixedSizeAllocator(fsa);
 
-	// block size on 32-bit = 16 and on 64-bit = 32
-	fsa = FixedSizeAllocator::Create(base_size * 4, 200, default_allocator);
-	FixedSizeAllocator::AddFixedSizeAllocator(fsa);
+    // block size on 32-bit = 16 and on 64-bit = 32
+    fsa = FixedSizeAllocator::Create(base_size * 4, 200, default_allocator);
+    FixedSizeAllocator::AddFixedSizeAllocator(fsa);
 
-	// block size on 32-bit = 36 and on 64-bit = 72
-	fsa = FixedSizeAllocator::Create(base_size * 9, 70, default_allocator);
-	FixedSizeAllocator::AddFixedSizeAllocator(fsa);
+    // block size on 32-bit = 36 and on 64-bit = 72
+    fsa = FixedSizeAllocator::Create(base_size * 9, 70, default_allocator);
+    FixedSizeAllocator::AddFixedSizeAllocator(fsa);
 
 #ifdef BUILD_DEBUG
-	// initialize the allocation counter
-	AllocationCounter::Create();
+    // initialize the allocation counter
+    AllocationCounter::Create();
 #endif
 }
 
 void DestroyAllocators()
 {
 #ifdef BUILD_DEBUG
-	AllocationCounter::Get()->Dump();
-	AllocationCounter::Destroy();
+    AllocationCounter::Get()->Dump();
+    AllocationCounter::Destroy();
 #endif
 
-	// destroy the fixed size allocators
-	FixedSizeAllocator** const registered_fsas = FixedSizeAllocator::GetAvailableFixedSizeAllocators();
+    // destroy the fixed size allocators
+    FixedSizeAllocator** const registered_fsas = FixedSizeAllocator::GetAvailableFixedSizeAllocators();
 
-	for (uint8_t i = 0; i < MAX_FIXED_SIZE_ALLOCATORS; ++i)
-	{
-		if (registered_fsas[i])
-		{
-			FixedSizeAllocator::Destroy(registered_fsas[i]);
-			registered_fsas[i] = nullptr;
-		}
-	}
+    for (uint8_t i = 0; i < MAX_FIXED_SIZE_ALLOCATORS; ++i)
+    {
+        if (registered_fsas[i])
+        {
+            FixedSizeAllocator::Destroy(registered_fsas[i]);
+            registered_fsas[i] = nullptr;
+        }
+    }
 
-	// destroy the default allocator
-	BlockAllocator::DestroyDefaultAllocator();
+    // destroy the default allocator
+    BlockAllocator::DestroyDefaultAllocator();
 }
 
 } // namespace memory

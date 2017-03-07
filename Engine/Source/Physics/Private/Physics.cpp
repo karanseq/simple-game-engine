@@ -14,30 +14,30 @@ Physics::Physics() : num_physics_objects_(0)
 
 Physics::~Physics()
 {
-	physics_objects_.clear();
-	num_physics_objects_ = 0;
+    physics_objects_.clear();
+    num_physics_objects_ = 0;
 }
 
 Physics* Physics::Create()
 {
-	if (!Physics::instance_)
-	{
-		Physics::instance_ = new Physics();
-	}
-	return Physics::instance_;
+    if (!Physics::instance_)
+    {
+        Physics::instance_ = new Physics();
+    }
+    return Physics::instance_;
 }
 
 void Physics::Destroy()
 {
-	SAFE_DELETE(Physics::instance_);
+    SAFE_DELETE(Physics::instance_);
 }
 
 void Physics::Run(float i_dt)
 {
-	for (size_t i = 0; i < num_physics_objects_; ++i)
-	{
-		physics_objects_[i]->Update(i_dt);
-	}
+    for (size_t i = 0; i < num_physics_objects_; ++i)
+    {
+        physics_objects_[i]->Update(i_dt);
+    }
 }
 
 } // namespace physics

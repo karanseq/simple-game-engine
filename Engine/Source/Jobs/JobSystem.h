@@ -22,35 +22,35 @@ class Worker;
 
 class JobSystem
 {
-	struct Team
-	{
-		JobQueue*							job_queue_;
-		engine::data::PooledString			name_;
-		std::vector<Worker*>				workers_;
-	};
+    struct Team
+    {
+        JobQueue*                           job_queue_;
+        engine::data::PooledString          name_;
+        std::vector<Worker*>                workers_;
+    };
 
 public:
-	static JobSystem* Create();
-	static void Destroy();
-	static inline JobSystem* Get() { return JobSystem::instance_; }
+    static JobSystem* Create();
+    static void Destroy();
+    static inline JobSystem* Get() { return JobSystem::instance_; }
 
-	bool CreateTeam(const engine::data::PooledString& i_team_name, const size_t num_workers);
-	bool AddJob(InterfaceJob* i_job, const engine::data::PooledString& i_team_name);
-	void Shutdown();
+    bool CreateTeam(const engine::data::PooledString& i_team_name, const size_t num_workers);
+    bool AddJob(InterfaceJob* i_job, const engine::data::PooledString& i_team_name);
+    void Shutdown();
 
 private:
-	JobSystem();
-	~JobSystem();
-	static JobSystem*														instance_;
+    JobSystem();
+    ~JobSystem();
+    static JobSystem*                                                       instance_;
 
-	JobSystem(const JobSystem&) = delete;
-	JobSystem(JobSystem&&) = delete;
+    JobSystem(const JobSystem&) = delete;
+    JobSystem(JobSystem&&) = delete;
 
-	JobSystem& operator=(const JobSystem&) = delete;
-	JobSystem& operator=(JobSystem&&) = delete;
+    JobSystem& operator=(const JobSystem&) = delete;
+    JobSystem& operator=(JobSystem&&) = delete;
 
-	std::map<engine::data::HashedString, Team*>								teams_;
-	bool																	shutdown_requested_;
+    std::map<engine::data::HashedString, Team*>                             teams_;
+    bool                                                                    shutdown_requested_;
 
 }; // class JobSystem
 

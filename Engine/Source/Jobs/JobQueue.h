@@ -18,33 +18,33 @@ class InterfaceJob;
 class JobQueue
 {
 public:
-	JobQueue(const engine::data::PooledString& i_id);
-	~JobQueue();
+    JobQueue(const engine::data::PooledString& i_id);
+    ~JobQueue();
 
-	bool AddJob(InterfaceJob* i_new_job);
-	InterfaceJob* GetJob();
+    bool AddJob(InterfaceJob* i_new_job);
+    InterfaceJob* GetJob();
 
-	inline void RequestShutdown();
-	inline bool HasShutdownBeenRequested() const;
+    inline void RequestShutdown();
+    inline bool HasShutdownBeenRequested() const;
 
-	inline const engine::data::PooledString& GetID() const;
-	inline void SetID(const engine::data::PooledString& i_id);
+    inline const engine::data::PooledString& GetID() const;
+    inline void SetID(const engine::data::PooledString& i_id);
 
 private:
-	JobQueue(const JobQueue&) = delete;
-	JobQueue(JobQueue&&) = delete;
+    JobQueue(const JobQueue&) = delete;
+    JobQueue(JobQueue&&) = delete;
 
-	JobQueue& operator=(const JobQueue&) = delete;
-	JobQueue& operator=(JobQueue&&) = delete;
+    JobQueue& operator=(const JobQueue&) = delete;
+    JobQueue& operator=(JobQueue&&) = delete;
 
-	engine::data::PooledString					id_;
-	std::condition_variable						start_searching_;
+    engine::data::PooledString                  id_;
+    std::condition_variable                     start_searching_;
 
-	std::mutex									shutdown_mutex_;
-	bool										shutdown_requested_;
+    std::mutex                                  shutdown_mutex_;
+    bool                                        shutdown_requested_;
 
-	std::mutex									queue_mutex_;
-	std::queue<InterfaceJob*>					job_queue_;
+    std::mutex                                  queue_mutex_;
+    std::queue<InterfaceJob*>                   job_queue_;
 
 }; // class JobQueue
 

@@ -18,24 +18,24 @@ Updater::~Updater()
 
 Updater* Updater::Create()
 {
-	if (!Updater::instance_)
-	{
-		Updater::instance_ = new Updater();
-	}
-	return Updater::instance_;
+    if (!Updater::instance_)
+    {
+        Updater::instance_ = new Updater();
+    }
+    return Updater::instance_;
 }
 
 void Updater::Destroy()
 {
-	SAFE_DELETE(Updater::instance_);
+    SAFE_DELETE(Updater::instance_);
 }
 
 void Updater::Run(float dt)
 {
-	for (size_t i = 0; i < num_tickables_; ++i)
-	{
-		tickables_[i]->Update(dt);
-	}
+    for (size_t i = 0; i < num_tickables_; ++i)
+    {
+        tickables_[i]->Update(dt);
+    }
 }
 
 } // namespace time

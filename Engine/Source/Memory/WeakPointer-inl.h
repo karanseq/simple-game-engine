@@ -12,80 +12,80 @@ namespace memory {
 template<class T>
 inline WeakPointer<T>& WeakPointer<T>::operator=(const WeakPointer& i_copy)
 {
-	// check for self assignment
-	if (this != &i_copy)
-	{
-		// release previously observed object
-		Release();
+    // check for self assignment
+    if (this != &i_copy)
+    {
+        // release previously observed object
+        Release();
 
-		// copy data
-		object_ = i_copy.object_;
-		ref_counter_ = i_copy.ref_counter_;
+        // copy data
+        object_ = i_copy.object_;
+        ref_counter_ = i_copy.ref_counter_;
 
-		// acquire newly observed object
-		Acquire();
-	}
-	return *this;
+        // acquire newly observed object
+        Acquire();
+    }
+    return *this;
 }
 
 template<class T>
 inline WeakPointer<T>& WeakPointer<T>::operator=(WeakPointer&& i_copy)
 {
-	// check for self assignment
-	if (this != &i_copy)
-	{
-		// swap data
-		std::swap(object_, i_copy.object_);
-		std::swap(ref_counter_, i_copy.ref_counter_);
-	}
-	return *this;
+    // check for self assignment
+    if (this != &i_copy)
+    {
+        // swap data
+        std::swap(object_, i_copy.object_);
+        std::swap(ref_counter_, i_copy.ref_counter_);
+    }
+    return *this;
 }
 
 template<class T>
 inline WeakPointer<T>& WeakPointer<T>::operator=(const SharedPointer<T>& i_strong_pointer)
 {
-	// release previously observed object
-	Release();
+    // release previously observed object
+    Release();
 
-	// copy data
-	object_ = i_strong_pointer.object_;
-	ref_counter_ = i_strong_pointer.ref_counter_;
+    // copy data
+    object_ = i_strong_pointer.object_;
+    ref_counter_ = i_strong_pointer.ref_counter_;
 
-	// acquire newly observed object
-	Acquire();
+    // acquire newly observed object
+    Acquire();
 
-	return *this;
+    return *this;
 }
 
 template<class T>
 inline WeakPointer<T>::operator bool() const
 {
-	return !HasExpired();
+    return !HasExpired();
 }
 
 template<class T>
 inline bool WeakPointer<T>::operator==(const WeakPointer& i_other) const
 {
-	return (object_ == i_other.object_);
+    return (object_ == i_other.object_);
 }
 
 template<class T>
 inline bool WeakPointer<T>::operator!=(const WeakPointer& i_other) const
 {
-	return (object_ != i_other.object_);
+    return (object_ != i_other.object_);
 }
 
 #ifdef BUILD_DEBUG
 template<class T>
 inline long WeakPointer<T>::GetStrongCount() const
 {
-	return ref_counter_ ? ref_counter_->strong_count : 0;
+    return ref_counter_ ? ref_counter_->strong_count : 0;
 }
 
 template<class T>
 inline long WeakPointer<T>::GetWeakCount() const
 {
-	return ref_counter_ ? ref_counter_->weak_count : 0;
+    return ref_counter_ ? ref_counter_->weak_count : 0;
 }
 #endif
 
@@ -104,23 +104,23 @@ inline SharedPointer<T> WeakPointer<T>::Lock() const
 template<class T>
 inline void WeakPointer<T>::Acquire()
 {
-	if (ref_counter_)
-	{
-		++(ref_counter_->weak_count);
-	}
+    if (ref_counter_)
+    {
+        ++(ref_counter_->weak_count);
+    }
 }
 
 template<class T>
 inline void WeakPointer<T>::Release()
 {
-	if (ref_counter_)
-	{
-		if (--(ref_counter_->weak_count) <= 0 && ref_counter_->strong_count <= 0)
-		{
-			SAFE_DELETE(ref_counter_);
-		}
-		return;
-	}
+    if (ref_counter_)
+    {
+        if (--(ref_counter_->weak_count) <= 0 && ref_counter_->strong_count <= 0)
+        {
+            SAFE_DELETE(ref_counter_);
+        }
+        return;
+    }
 }
 
 } // namespace memory

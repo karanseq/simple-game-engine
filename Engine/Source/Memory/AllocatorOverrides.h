@@ -8,25 +8,25 @@
 namespace engine {
 namespace memory {
 
-	/*
-		AlignmentType
-		- An enum that defines the various types of alignment supported by the overloaded new operator
-	*/
-	enum AlignmentType
-	{
-		ALIGNMENT_DEFAULT = 4,
-		ALIGNMENT_8 = 8,
-		ALIGNMENT_16 = 16,
-		ALIGNMENT_32 = 32,
-		ALIGNMENT_64 = 64
-	};
+    /*
+        AlignmentType
+        - An enum that defines the various types of alignment supported by the overloaded new operator
+    */
+    enum AlignmentType
+    {
+        ALIGNMENT_DEFAULT = 4,
+        ALIGNMENT_8 = 8,
+        ALIGNMENT_16 = 16,
+        ALIGNMENT_32 = 32,
+        ALIGNMENT_64 = 64
+    };
 
-	// forward declarations
-	class BlockAllocator;
-	class FixedSizeAllocator;
+    // forward declarations
+    class BlockAllocator;
+    class FixedSizeAllocator;
 
-	void* DoAlloc(size_t i_size, const char* i_function_name);
-	void DoFree(void* i_pointer, const char* i_function_name);
+    void* DoAlloc(size_t i_size, const char* i_function_name);
+    void DoFree(void* i_pointer, const char* i_function_name);
 
 } // namespace memory
 } // namespace engine

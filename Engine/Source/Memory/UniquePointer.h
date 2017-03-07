@@ -12,19 +12,19 @@ template<class T>
 class UniquePointer
 {
 public:
-	UniquePointer() : object_(nullptr)
-	{}
-	UniquePointer(std::nullptr_t) : object_(nullptr)
-	{}
+    UniquePointer() : object_(nullptr)
+    {}
+    UniquePointer(std::nullptr_t) : object_(nullptr)
+    {}
     UniquePointer(T* i_object) : object_(i_object)
     {}
     ~UniquePointer()
     {
         SAFE_DELETE(object_);
-	}
+    }
 
-	UniquePointer(const UniquePointer& i_copy) = delete;
-	UniquePointer& operator=(const UniquePointer& i_other) = delete;
+    UniquePointer(const UniquePointer& i_copy) = delete;
+    UniquePointer& operator=(const UniquePointer& i_other) = delete;
 
     UniquePointer(UniquePointer&& i_copy) : object_(i_copy.object_)
     {
@@ -42,7 +42,7 @@ public:
     inline bool operator!=(const UniquePointer& i_other) const;
 
 private:
-    T*								object_;
+    T*                              object_;
 }; // class UniquePointer
 
 } // namespace memory

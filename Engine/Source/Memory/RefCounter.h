@@ -7,11 +7,11 @@ namespace memory {
 struct RefCounter
 {
 public:
-	explicit RefCounter(long i_strong_count = 0, long i_weak_count = 0) : strong_count(i_strong_count),
-		weak_count(i_weak_count)
-	{}
-	long strong_count;
-	long weak_count;
+    explicit RefCounter(long i_strong_count = 0, long i_weak_count = 0) : strong_count(i_strong_count),
+        weak_count(i_weak_count)
+    {}
+    long strong_count;
+    long weak_count;
 }; // struct RefCounter
 
 } // namespace memory

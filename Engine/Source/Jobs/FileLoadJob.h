@@ -15,28 +15,28 @@ namespace jobs {
 class FileLoadJob : public InterfaceJob
 {
 public:
-	FileLoadJob(const engine::data::PooledString& i_file_name, const std::function<void(const engine::util::FileUtils::FileData)>& i_callback);
-	~FileLoadJob();
+    FileLoadJob(const engine::data::PooledString& i_file_name, const std::function<void(const engine::util::FileUtils::FileData)>& i_callback);
+    ~FileLoadJob();
 
-	// implement InterfaceJob
-	void DoWork() override;
+    // implement InterfaceJob
+    void DoWork() override;
 
-	// accessors and mutators
-	inline const engine::data::PooledString& GetFileName() const;
-	inline void SetFileName(const engine::data::PooledString& i_file_name);
+    // accessors and mutators
+    inline const engine::data::PooledString& GetFileName() const;
+    inline void SetFileName(const engine::data::PooledString& i_file_name);
 
-	inline const std::function<void(const engine::util::FileUtils::FileData)>& GetCallback() const;
-	inline void SetCallback(const std::function<void(const engine::util::FileUtils::FileData)>& i_callback);
+    inline const std::function<void(const engine::util::FileUtils::FileData)>& GetCallback() const;
+    inline void SetCallback(const std::function<void(const engine::util::FileUtils::FileData)>& i_callback);
 
 private:
-	FileLoadJob(const FileLoadJob&) = delete;
-	FileLoadJob(FileLoadJob&&) = delete;
+    FileLoadJob(const FileLoadJob&) = delete;
+    FileLoadJob(FileLoadJob&&) = delete;
 
-	FileLoadJob& operator=(const FileLoadJob&) = delete;
-	FileLoadJob& operator=(FileLoadJob&&) = delete;
+    FileLoadJob& operator=(const FileLoadJob&) = delete;
+    FileLoadJob& operator=(FileLoadJob&&) = delete;
 
-	engine::data::PooledString													file_name_;
-	std::function<void(const engine::util::FileUtils::FileData)>				callback_;
+    engine::data::PooledString                                                  file_name_;
+    std::function<void(const engine::util::FileUtils::FileData)>                callback_;
 };
 
 } // namespace jobs

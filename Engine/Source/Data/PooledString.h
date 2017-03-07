@@ -10,22 +10,22 @@ namespace data {
 class PooledString
 {
 public:
-	PooledString();
-	PooledString(const char* i_string);
-	~PooledString();
+    PooledString();
+    PooledString(const char* i_string);
+    ~PooledString();
 
-	PooledString(const PooledString& i_copy);
+    PooledString(const PooledString& i_copy);
 
-	inline PooledString& operator=(const PooledString& i_copy);
-	inline bool operator==(const PooledString& i_other) const;
-	inline bool operator!=(const PooledString& i_other) const;
-	inline operator bool() const;
-	
-	inline const char* GetString() const;
-	inline const size_t GetLength() const;
+    inline PooledString& operator=(const PooledString& i_copy);
+    inline bool operator==(const PooledString& i_other) const;
+    inline bool operator!=(const PooledString& i_other) const;
+    inline operator bool() const;
+    
+    inline const char* GetString() const;
+    inline const size_t GetLength() const;
 
 private:
-	const char*									string_;
+    const char*                                 string_;
 
 }; // class PooledString
 

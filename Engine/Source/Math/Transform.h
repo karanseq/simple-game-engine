@@ -6,40 +6,40 @@
 namespace engine {
 namespace math {
 
-	/*
-		Transform
-		- A class that represents the position, scale and rotation of an object in 3D space
-	*/
+    /*
+        Transform
+        - A class that represents the position, scale and rotation of an object in 3D space
+    */
 
-	class Transform
-	{
-	public:
-		explicit Transform(Vec3D i_position = Vec3D::ZERO, Vec3D i_rotation = Vec3D::ZERO, Vec3D i_scale = Vec3D::UNIT);
-		Transform(const Transform& i_copy);
+    class Transform
+    {
+    public:
+        explicit Transform(Vec3D i_position = Vec3D::ZERO, Vec3D i_rotation = Vec3D::ZERO, Vec3D i_scale = Vec3D::UNIT);
+        Transform(const Transform& i_copy);
 
-		~Transform()
-		{}
+        ~Transform()
+        {}
 
-		// assignment
-		inline Transform& operator=(const Transform& i_transform);
+        // assignment
+        inline Transform& operator=(const Transform& i_transform);
 
-		// accessors and mutators
-		inline const Vec3D& GetPosition() const;
-		inline void SetPosition(const Vec3D& i_position);
-		inline const Vec3D& GetRotation() const;
-		inline void SetRotation(const Vec3D& i_rotation);
-		inline const Vec3D& GetScale() const;
-		inline void SetScale(const Vec3D& i_scale);
+        // accessors and mutators
+        inline const Vec3D& GetPosition() const;
+        inline void SetPosition(const Vec3D& i_position);
+        inline const Vec3D& GetRotation() const;
+        inline void SetRotation(const Vec3D& i_rotation);
+        inline const Vec3D& GetScale() const;
+        inline void SetScale(const Vec3D& i_scale);
 
-		// constants
-		static const Transform			ZERO;
+        // constants
+        static const Transform          ZERO;
 
-	protected:
-		Vec3D position_;
-		Vec3D rotation_;
-		Vec3D scale_;
+    protected:
+        Vec3D position_;
+        Vec3D rotation_;
+        Vec3D scale_;
 
-	}; // class Transform
+    }; // class Transform
 
 } // namespace math
 } // namespace engine

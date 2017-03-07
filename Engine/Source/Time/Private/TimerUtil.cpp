@@ -14,18 +14,18 @@ float TimerUtil::last_frame_time_ms_ = 0.0f;
 float TimerUtil::GetLastFrameTime_ms()
 {
 #if defined(CONSTANT_FRAMETIME)
-	return DESIRED_FRAMETIME_MS;
+    return DESIRED_FRAMETIME_MS;
 #elif defined(CLAMP_FRAMETIME)
-	if (last_frame_time_ms_ > MAX_FRAMETIME_MS)
-	{
-		return MAX_FRAMETIME_MS;
-	}
-	else
-	{
-		return last_frame_time_ms_;
-	}
+    if (last_frame_time_ms_ > MAX_FRAMETIME_MS)
+    {
+        return MAX_FRAMETIME_MS;
+    }
+    else
+    {
+        return last_frame_time_ms_;
+    }
 #else
-	return last_frame_time_ms_;
+    return last_frame_time_ms_;
 #endif
 }
 

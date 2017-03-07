@@ -11,20 +11,20 @@ namespace gameobject {
 class GameObject;
 
 /*
-	InterfaceGameObjectController
-	- An interface that offers handles to control a GameObject.
+    InterfaceGameObjectController
+    - An interface that offers handles to control a GameObject.
 */
 class InterfaceGameObjectController
 {
 public:
-	virtual ~InterfaceGameObjectController() {}
+    virtual ~InterfaceGameObjectController() {}
 
-	virtual InterfaceGameObjectController* Clone() const = 0;
+    virtual InterfaceGameObjectController* Clone() const = 0;
 
-	virtual engine::memory::SharedPointer<GameObject> GetGameObject() const = 0;
-	virtual void SetGameObject(const engine::memory::SharedPointer<engine::gameobject::GameObject>& i_game_object) = 0;
+    virtual engine::memory::SharedPointer<GameObject> GetGameObject() const = 0;
+    virtual void SetGameObject(const engine::memory::SharedPointer<engine::gameobject::GameObject>& i_game_object) = 0;
 
-	virtual void UpdateGameObject() = 0;
+    virtual void UpdateGameObject() = 0;
 }; // class InterfaceGameObjectController
 
 } // namespace gameobject
