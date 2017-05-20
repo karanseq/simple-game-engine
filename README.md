@@ -2,8 +2,8 @@ A simple game engine written entirely in C++ as part of the Game Engineering cou
 
 This project is a work in progress and currently contains the following modules:
 
-Memory Management:
-------------------
+Thread-safe Memory Management System:
+-------------------------------------
 - Provides a variable size allocator with byte alignment & defragmentation
 - Provides a fixed size allocator for quick allocations with low overhead
 - Provides overwrite detection by guardbanding memory for debug builds
@@ -16,10 +16,10 @@ Multi-threaded Job System:
 - Each worker contains an std::thread and waits for jobs to be posted in the corresponding queue
 - Any kind and amount of jobs can be added to the job system, as long as a given job implements InterfaceJob.
 
-Timer & Time-based Events
--------------------------
+Timer and Time-based Events:
+----------------------------
 - An updater that manages broadcasting the tick to all entities that need it
-- The updated also maintains a list of timer events and broadcasts them
+- The updater also maintains a list of timer events and broadcasts them
 - A timer event contains a function object. It invokes this function object after a specified duration either once, multiple times or till it is destroyed
 
 2D Collision System:
@@ -31,7 +31,7 @@ Timer & Time-based Events
 
 Miscellaneous:
 --------------
-- A logging & asserting utility
+- A logging and asserting utility
 - A pooled and hashed strings utility
 - A primer for a game object with corresponding geometry & *very* simple physics
 - A set of optimized geometry classes using Intel SSE instructions
