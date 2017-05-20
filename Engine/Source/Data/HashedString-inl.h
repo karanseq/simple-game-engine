@@ -23,9 +23,19 @@ inline bool HashedString::operator==(const HashedString& i_other) const
     return (hash_ == i_other.hash_);
 }
 
+inline bool HashedString::operator==(const char* i_other) const
+{
+    return (hash_ == HashedString::Hash(i_other));
+}
+
 inline bool HashedString::operator!=(const HashedString& i_other) const
 {
     return (hash_ != i_other.hash_);
+}
+
+inline bool HashedString::operator!=(const char* i_other) const
+{
+    return (hash_ != HashedString::Hash(i_other));
 }
 
 inline bool HashedString::operator<(const HashedString& i_other) const

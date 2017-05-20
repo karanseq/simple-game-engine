@@ -2,9 +2,11 @@
 #define FILE_UTILS_H_
 
 // library includes
+#include <mutex>
 #include <unordered_map>
 
 // engine includes
+#include "Data\HashedString.h"
 #include "Data\PooledString.h"
 
 namespace engine {
@@ -60,15 +62,20 @@ public:
     static void Destroy();
     static inline FileUtils* Get();
 
-    FileData ReadFile(const engine::data::PooledString& i_file_name, bool i_cache_file);
+    const FileData ReadFile(const engine::data::PooledString& i_file_name, bool i_cache_file = true);
+    inline const FileData GetFileFromCache(const engine::data::PooledString& i_file_name) const;
+    inline const FileData GetFileFromCache(const engine::data::HashedString& i_file_name) const;
+    inline const FileData GetFileFromCache(unsigned int i_hash) const;
     
     bool WriteFile(const engine::data::PooledString& i_file_name, const char* i_file_contents) const;
     void ClearFileCache();
 
     inline bool IsFileCached(const engine::data::PooledString& i_file_name) const;
+    inline bool IsFileCached(const engine::data::HashedString& i_file_name) const;
     inline bool IsFileCached(unsigned int i_hash) const;
 
 private:
+    mutable std::mutex                                      file_cache_mutex_;
     std::unordered_map<unsigned int, FileData>              file_cache_;
     
 }; // class FileUtils

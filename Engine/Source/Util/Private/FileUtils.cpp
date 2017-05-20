@@ -3,7 +3,6 @@
 // engine includes
 #include "Assert\Assert.h"
 #include "Common\HelperMacros.h"
-#include "Data\HashedString.h"
 #include "Logger\Logger.h"
 
 namespace engine {
@@ -35,7 +34,7 @@ void FileUtils::Destroy()
     LOG("FileUtils destroyed");
 }
 
-FileUtils::FileData FileUtils::ReadFile(const engine::data::PooledString& i_file_name, bool i_cache_file)
+const FileUtils::FileData FileUtils::ReadFile(const engine::data::PooledString& i_file_name, bool i_cache_file)
 {
     // validate inputs
     ASSERT(i_file_name.GetLength() > 0);
@@ -78,17 +77,29 @@ FileUtils::FileData FileUtils::ReadFile(const engine::data::PooledString& i_file
 
     fclose(file);
 
-    // prepare outputs
-    FileData file_data(i_file_name, buffer, static_cast<size_t>(file_size));
-
-    // add the file to the cache
-    if (i_cache_file)
+    // another thread might have added this file since the last time we checked
+    if (IsFileCached(hash))
     {
-        file_cache_.insert(std::pair<unsigned int, FileData>(hash, file_data));
-        LOG("FileUtils added '%s' to the cache", i_file_name);
+        // delete the buffer and return the cached file
+        delete[] buffer;
+        return file_cache_[hash];
     }
+    else
+    {
+        std::lock_guard<std::mutex> lock(file_cache_mutex_);
 
-    return file_data;
+        // prepare outputs
+        FileData file_data(i_file_name, buffer, static_cast<size_t>(file_size));
+
+        // add the file to the cache
+        if (i_cache_file)
+        {
+            file_cache_.insert(std::pair<unsigned int, FileData>(hash, file_data));
+            LOG("FileUtils added '%s' to the cache", i_file_name);
+        }
+
+        return file_data;
+    }
 }
 
 bool FileUtils::WriteFile(const engine::data::PooledString& i_file_name, const char* i_file_contents) const
@@ -98,6 +109,8 @@ bool FileUtils::WriteFile(const engine::data::PooledString& i_file_name, const c
 
 void FileUtils::ClearFileCache()
 {
+    std::lock_guard<std::mutex> lock(file_cache_mutex_);
+
     for (auto i : file_cache_)
     {
         delete i.second.file_contents;

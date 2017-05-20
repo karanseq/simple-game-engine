@@ -145,7 +145,7 @@ const char* StringPool::Find(const char* i_string)
 void StringPool::DumpStatistics() const
 {
     LOG("---------- %s ----------", __FUNCTION__);
-    LOG("Dumping usage statistice for StringPool:");
+    LOG("Dumping usage statistics for the StringPool:");
     LOG("Total memory used:%zu/%zu", memory_used_, pool_size_);
     LOG("Total number of strings:%zu", num_strings_);
     LOG("---------- END ----------");

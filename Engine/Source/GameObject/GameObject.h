@@ -2,12 +2,16 @@
 #define ENGINE_GAME_OBJECT_H_
 
 // engine includes
-#include "Math\Rect.h"
+#include "Math\AABB.h"
 #include "Math\Transform.h"
 #include "Memory\SharedPointer.h"
+#include "Memory\WeakPointer.h"
 
 namespace engine {
 namespace gameobject {
+
+// forward declaration
+class Actor;
 
 /*
     GameObject
@@ -16,23 +20,20 @@ namespace gameobject {
 class GameObject
 {
 public:
-    inline static engine::memory::SharedPointer<GameObject> Create(const engine::math::Rect& i_aabb = engine::math::Rect::ZERO, 
-        const engine::math::Transform& i_transform = engine::math::Transform::ZERO);
-
-    virtual ~GameObject()
-    {}
+    inline static engine::memory::SharedPointer<GameObject> Create(const engine::math::AABB& i_aabb = engine::math::AABB::ZERO,
+        const engine::math::Transform& i_transform = engine::math::Transform::ZERO,
+        const engine::memory::WeakPointer<Actor>& i_owner = nullptr);
 
     // copy constructor
-    GameObject(const GameObject& i_copy) : aabb_(i_copy.aabb_),
-        transform_(i_copy.transform_)
+    GameObject(const GameObject& i_copy) : 
+        transform_(i_copy.transform_),
+        aabb_(i_copy.aabb_),
+        owner_(i_copy.owner_)
     {}
     // copy assignment operator
     inline GameObject& operator=(const GameObject& i_game_object);
 
     // accessors and mutators
-    inline const engine::math::Rect& GetAABB() const;
-    inline void SetAABB(const engine::math::Rect& i_aabb);
-
     inline const engine::math::Transform& GetTransform() const;
     inline void SetTransform(const engine::math::Transform& i_transform);
 
@@ -45,15 +46,25 @@ public:
     inline const engine::math::Vec3D& GetScale() const;
     inline void SetScale(const engine::math::Vec3D& i_scale);
 
+    inline const engine::math::AABB& GetAABB() const;
+    inline void SetAABB(const engine::math::AABB& i_aabb);
+
+    inline const engine::memory::WeakPointer<Actor>& GetOwner() const;
+    inline void SetOwner(const engine::memory::WeakPointer<Actor>& i_owner);
+
 private:
-    explicit GameObject(const engine::math::Rect& i_aabb = engine::math::Rect::ZERO, 
-        const engine::math::Transform& i_transform = engine::math::Transform::ZERO) : aabb_(i_aabb),
-        transform_(i_transform)
+    explicit GameObject(const engine::math::AABB& i_aabb = engine::math::AABB::ZERO,
+        const engine::math::Transform& i_transform = engine::math::Transform::ZERO,
+        const engine::memory::WeakPointer<Actor>& i_owner = nullptr) :
+            transform_(i_transform),
+            aabb_(i_aabb),
+            owner_(i_owner)
     {}
 
 private:
-    engine::math::Rect                      aabb_;
     engine::math::Transform                 transform_;
+    engine::math::AABB                      aabb_;
+    engine::memory::WeakPointer<Actor>      owner_;
 }; // class GameObject
 
 } // namespace gameobject

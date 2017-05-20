@@ -1,20 +1,20 @@
 #ifndef ENGINE_H_
 #define ENGINE_H_
 
+// library includes
+#include <Windows.h>
+
 namespace engine {
 
-// TODO: Find a better place for this
-// Currently it is publicly accessible
-static bool shutdown_requested_;
-
-bool StartUp();
-
+bool StartUp(HINSTANCE i_h_instance, int i_n_cmd_show, const char* i_window_name, unsigned int i_window_width, unsigned int i_window_height);
 void Run();
 
-void Shutdown();
+void Pause();
+void Resume();
+bool IsPaused();
 
-// TODO: Find a better place for this
-void RequestShutdown();
+void InitiateShutdown();
+void Shutdown();
 
 } // namespace engine
 

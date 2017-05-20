@@ -101,15 +101,18 @@ inline void SharedPointer<T>::Release()
 {
     if (ref_counter_)
     {
-        if (--(ref_counter_->strong_count) <= 0)
+        if (ref_counter_->strong_count <= 1)
         {
             SAFE_DELETE(object_);
+            --ref_counter_->strong_count;
+
             if (ref_counter_->weak_count <= 0)
             {
                 SAFE_DELETE(ref_counter_);
             }
+            return;
         }
-        return;
+        --ref_counter_->strong_count;
     }
 }
 

@@ -2,6 +2,7 @@
 #define ACTOR_CREATOR_H_
 
 // library includes
+#include <mutex>
 #include <vector>
 
 // engine includes
@@ -41,6 +42,16 @@ private:
     static bool CreateActor(lua_State* i_lua_state, engine::memory::SharedPointer<Actor>& o_actor);
     static bool CreatePhysicsObject(lua_State* i_lua_state, const engine::memory::WeakPointer<engine::gameobject::GameObject>& i_game_object, engine::memory::WeakPointer<engine::physics::PhysicsObject>& o_physics_object);
     static bool CreateRenderableObject(lua_State* i_lua_state, const engine::memory::WeakPointer<engine::gameobject::GameObject>& i_game_object, engine::memory::WeakPointer<engine::render::RenderableObject>& o_renderable_object);
+
+    static inline uint32_t GetNewActorID()
+    {
+        std::lock_guard<std::mutex> lock(actor_count_mutex_);
+        return ++actor_count_;
+    }
+
+private:
+    static std::mutex                   actor_count_mutex_;
+    static uint32_t                     actor_count_;
 
 }; // class ActorCreator
 

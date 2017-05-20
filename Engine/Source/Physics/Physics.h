@@ -36,9 +36,15 @@ public:
     void Run(float i_dt);
 
     // create, add & remove physics objects
-    inline engine::memory::SharedPointer<PhysicsObject> CreatePhysicsObject(const engine::memory::WeakPointer<engine::gameobject::GameObject>& i_game_object, float i_mass = PhysicsObject::DEFAULT_MASS, float i_drag = PhysicsObject::DEFAULT_COEFF_DRAG);
-    inline void AddPhysicsObject(const engine::memory::SharedPointer<PhysicsObject>& i_physics_object);
-    inline void RemovePhysicsObject(const engine::memory::SharedPointer<PhysicsObject>& i_physics_object);
+    engine::memory::SharedPointer<PhysicsObject> CreatePhysicsObject(const engine::memory::WeakPointer<engine::gameobject::GameObject>& i_game_object, 
+                                                                    float i_mass = PhysicsObject::DEFAULT_MASS, 
+                                                                    float i_drag = PhysicsObject::DEFAULT_COEFF_DRAG, 
+                                                                    PhysicsObjectType i_type = PhysicsObjectType::kPhysicsObjectStatic,
+                                                                    uint16_t i_collision_filter = 0x0000,
+                                                                    bool i_is_collidable = false);
+
+    void AddPhysicsObject(const engine::memory::SharedPointer<PhysicsObject>& i_physics_object);
+    void RemovePhysicsObject(const engine::memory::SharedPointer<PhysicsObject>& i_physics_object);
 
 private:
     size_t                                                                          num_physics_objects_;

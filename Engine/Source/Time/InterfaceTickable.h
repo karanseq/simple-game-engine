@@ -14,7 +14,7 @@ class InterfaceTickable
 public:
     virtual ~InterfaceTickable() {}
 
-    virtual void Update(float dt) = 0;
+    virtual void Tick(float dt) = 0;
 
 }; // class InterfaceTickable
 

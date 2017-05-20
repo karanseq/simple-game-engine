@@ -47,46 +47,52 @@
       <UniqueIdentifier>{736dea9f-f22e-4df4-87d1-1603858ca447}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Common">
-      <UniqueIdentifier>{5a77a5bf-878c-48fb-aed1-0975253a5b25}</UniqueIdentifier>
+      <UniqueIdentifier>{caaa9181-16ff-473f-a98e-9ad9b862fa3d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Common">
-      <UniqueIdentifier>{4c1d5e4b-38ba-479a-9fb1-4776bc1e16f8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Physics">
-      <UniqueIdentifier>{4ad747bb-1ed2-4cb4-8e18-440af6d1c53f}</UniqueIdentifier>
+      <UniqueIdentifier>{272385d7-9fe6-49ac-9876-17b235118cda}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Time">
-      <UniqueIdentifier>{546ebcb6-22fe-4806-ba1f-8952d0442c4e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Physics">
-      <UniqueIdentifier>{54791a35-cbc3-4fbb-ac86-d318fdf2d20b}</UniqueIdentifier>
+      <UniqueIdentifier>{a6ca5f58-8212-4c46-ad4e-f3ebc09a8435}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Time">
-      <UniqueIdentifier>{215a90e7-4bf1-4d5d-b576-e5249ba12dfb}</UniqueIdentifier>
+      <UniqueIdentifier>{ab236536-4803-40ad-9ef6-3eb441c3e26c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Input">
-      <UniqueIdentifier>{32a9b468-91bd-4155-86d7-e64b67c88867}</UniqueIdentifier>
+    <Filter Include="Header Files\Physics">
+      <UniqueIdentifier>{d5fa6457-d6f8-484e-a599-2fa5d9c5b9a6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Input">
-      <UniqueIdentifier>{89e6c92c-a9e3-4178-9987-da0eb8897240}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Jobs">
-      <UniqueIdentifier>{3f6ec883-e01c-403a-913d-9ee1f06ca2d4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Jobs">
-      <UniqueIdentifier>{91202ede-55a6-45ce-987f-20b3a7c46d13}</UniqueIdentifier>
+    <Filter Include="Source Files\Physics">
+      <UniqueIdentifier>{02c8a987-fdc6-4a4d-99bd-0fdc627d2d90}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Renderer">
-      <UniqueIdentifier>{1a8fede7-3e27-4a66-889d-562129cdacbd}</UniqueIdentifier>
+      <UniqueIdentifier>{ab96af57-ff5b-4d71-ae8b-74a52dac317e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Renderer">
-      <UniqueIdentifier>{2b15210d-ce79-4028-9c8c-b899fcefe98c}</UniqueIdentifier>
+      <UniqueIdentifier>{78bd074a-6af7-479c-bcbb-6e8426653200}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Util">
-      <UniqueIdentifier>{615c624b-cf4f-4471-b76c-c3d7c0f6a52a}</UniqueIdentifier>
+      <UniqueIdentifier>{19d8ed5c-40ac-42c1-9415-77e1605b4ff2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Util">
-      <UniqueIdentifier>{55d04381-03cf-4467-9656-36d0cefab2fb}</UniqueIdentifier>
+      <UniqueIdentifier>{0e0a9f07-98a7-47ce-ac2d-69a0faaf3640}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Input">
+      <UniqueIdentifier>{189ef538-2498-4108-8741-c492197dee31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Input">
+      <UniqueIdentifier>{457b68bd-f4a1-4295-9b3b-abb9538982c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Jobs">
+      <UniqueIdentifier>{259e1573-deb2-4118-8f4e-7bd3608eebcc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Jobs">
+      <UniqueIdentifier>{aa7cbe11-ad85-4c74-adff-543e586e225d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Events">
+      <UniqueIdentifier>{d62967c4-c0b1-4816-b853-10e39d9deccf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Events">
+      <UniqueIdentifier>{a7d3e3c3-a386-45dc-9b2b-cc259edac437}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -103,6 +109,9 @@
       <Filter>Header Files\Math</Filter>
     </ClInclude>
     <ClInclude Include="Source\GameObject\GameObject.h">
+      <Filter>Header Files\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameObject\InterfaceGameObjectController.h">
       <Filter>Header Files\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Source\Math\Transform.h">
@@ -153,37 +162,25 @@
     <ClInclude Include="Source\Common\Engine.h">
       <Filter>Header Files\Common</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Common\HelperMacros.h">
-      <Filter>Header Files\Common</Filter>
+    <ClInclude Include="Source\Math\Rect.h">
+      <Filter>Header Files\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Memory\RefCounter.h">
-      <Filter>Header Files\Memory</Filter>
+    <ClInclude Include="Source\Math\Rect-inl.h">
+      <Filter>Header Files\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Memory\SharedPointer.h">
-      <Filter>Header Files\Memory</Filter>
+    <ClInclude Include="Source\Math\Size.h">
+      <Filter>Header Files\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Memory\SharedPointer-inl.h">
-      <Filter>Header Files\Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Memory\UniquePointer.h">
-      <Filter>Header Files\Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Memory\UniquePointer-inl.h">
-      <Filter>Header Files\Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Memory\WeakPointer.h">
-      <Filter>Header Files\Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Memory\WeakPointer-inl.h">
-      <Filter>Header Files\Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Time\InterfaceTickable.h">
-      <Filter>Header Files\Time</Filter>
+    <ClInclude Include="Source\Math\Size-inl.h">
+      <Filter>Header Files\Math</Filter>
     </ClInclude>
     <ClInclude Include="Source\Time\TimerUtil.h">
       <Filter>Header Files\Time</Filter>
     </ClInclude>
     <ClInclude Include="Source\Time\Updater.h">
+      <Filter>Header Files\Time</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Time\InterfaceTickable.h">
       <Filter>Header Files\Time</Filter>
     </ClInclude>
     <ClInclude Include="Source\Time\Updater-inl.h">
@@ -201,19 +198,31 @@
     <ClInclude Include="Source\Physics\PhysicsObject-inl.h">
       <Filter>Header Files\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GameObject\Actor.h">
-      <Filter>Header Files\GameObject</Filter>
+    <ClInclude Include="Source\Memory\RefCounter.h">
+      <Filter>Header Files\Memory</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GameObject\ActorCreator.h">
-      <Filter>Header Files\GameObject</Filter>
+    <ClInclude Include="Source\Memory\WeakPointer.h">
+      <Filter>Header Files\Memory</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GameObject\Actor-inl.h">
-      <Filter>Header Files\GameObject</Filter>
+    <ClInclude Include="Source\Memory\WeakPointer-inl.h">
+      <Filter>Header Files\Memory</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Data\HashedString.h">
+    <ClInclude Include="Source\Memory\SharedPointer.h">
+      <Filter>Header Files\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Memory\SharedPointer-inl.h">
+      <Filter>Header Files\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Memory\UniquePointer.h">
+      <Filter>Header Files\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Memory\UniquePointer-inl.h">
+      <Filter>Header Files\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Data\StringPool.h">
       <Filter>Header Files\Data</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Data\HashedString-inl.h">
+    <ClInclude Include="Source\Data\StringPool-inl.h">
       <Filter>Header Files\Data</Filter>
     </ClInclude>
     <ClInclude Include="Source\Data\PooledString.h">
@@ -222,43 +231,49 @@
     <ClInclude Include="Source\Data\PooledString-inl.h">
       <Filter>Header Files\Data</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Data\StringPool.h">
+    <ClInclude Include="Source\Data\HashedString.h">
       <Filter>Header Files\Data</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Data\StringPool-inl.h">
+    <ClInclude Include="Source\Data\HashedString-inl.h">
       <Filter>Header Files\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Renderer\Renderer.h">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Renderer\Renderer-inl.h">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Renderer\RenderableObject.h">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Renderer\RenderableObject-inl.h">
+      <Filter>Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Util\FileUtils.h">
+      <Filter>Header Files\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Util\FileUtils-inl.h">
+      <Filter>Header Files\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameObject\Actor.h">
+      <Filter>Header Files\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameObject\Actor-inl.h">
+      <Filter>Header Files\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Source\Input\Input.h">
       <Filter>Header Files\Input</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Input\KeyboardEvent.h">
-      <Filter>Header Files\Input</Filter>
+    <ClInclude Include="Source\GameObject\ActorCreator.h">
+      <Filter>Header Files\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Input\KeyboardEventDispatcher.h">
-      <Filter>Header Files\Input</Filter>
+    <ClInclude Include="Source\Util\LuaHelper.h">
+      <Filter>Header Files\Util</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Input\KeyboardEventDispatcher-inl.h">
-      <Filter>Header Files\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Input\KeyboardEvent-inl.h">
-      <Filter>Header Files\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Jobs\CreateActorCacheFileDataJob.h">
-      <Filter>Header Files\Jobs</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Jobs\CreateActorCacheFileDataJob-inl.h">
-      <Filter>Header Files\Jobs</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Jobs\CreateActorDeleteFileDataJob.h">
-      <Filter>Header Files\Jobs</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Jobs\CreateActorDeleteFileDataJob-inl.h">
-      <Filter>Header Files\Jobs</Filter>
+    <ClInclude Include="Source\Common\HelperMacros.h">
+      <Filter>Header Files\Common</Filter>
     </ClInclude>
     <ClInclude Include="Source\Jobs\FileLoadJob.h">
-      <Filter>Header Files\Jobs</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Jobs\FileLoadJob-inl.h">
       <Filter>Header Files\Jobs</Filter>
     </ClInclude>
     <ClInclude Include="Source\Jobs\InterfaceJob.h">
@@ -276,44 +291,89 @@
     <ClInclude Include="Source\Jobs\Worker.h">
       <Filter>Header Files\Jobs</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Jobs\FileLoadJob-inl.h">
+      <Filter>Header Files\Jobs</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Memory\AllocationCounter.h">
       <Filter>Header Files\Memory</Filter>
     </ClInclude>
     <ClInclude Include="Source\Memory\AllocationCounter-inl.h">
       <Filter>Header Files\Memory</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Renderer\RenderableObject.h">
-      <Filter>Header Files\Renderer</Filter>
+    <ClInclude Include="Source\Math\Vec4D.h">
+      <Filter>Header Files\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Renderer\RenderableObject-inl.h">
-      <Filter>Header Files\Renderer</Filter>
+    <ClInclude Include="Source\Math\Vec4D-inl.h">
+      <Filter>Header Files\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Renderer\Renderer.h">
-      <Filter>Header Files\Renderer</Filter>
+    <ClInclude Include="Source\Math\Mat44.h">
+      <Filter>Header Files\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Renderer\Renderer-inl.h">
-      <Filter>Header Files\Renderer</Filter>
+    <ClInclude Include="Source\Math\Mat44-inl.h">
+      <Filter>Header Files\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Util\FileUtils.h">
+    <ClInclude Include="Source\Math\AABB.h">
+      <Filter>Header Files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Collider.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\Collider-inl.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\DebugDraw.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Physics\DebugDraw-inl.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Events\EventDispatcher.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Events\KeyboardEvent.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Events\KeyboardEvent-inl.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\Vec3D-SSE.h">
+      <Filter>Header Files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\Vec4D-SSE.h">
+      <Filter>Header Files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\Vec3D-SSE-inl.h">
+      <Filter>Header Files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\Vec4D-SSE-inl.h">
+      <Filter>Header Files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Util\Profiler.h">
       <Filter>Header Files\Util</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Util\FileUtils-inl.h">
-      <Filter>Header Files\Util</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Util\LuaHelper.h">
-      <Filter>Header Files\Util</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Math\Rect.h">
+    <ClInclude Include="Source\Math\Mat44-SSE.h">
       <Filter>Header Files\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Math\Rect-inl.h">
+    <ClInclude Include="Source\Math\Mat44-SSE-inl.h">
       <Filter>Header Files\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Math\Size.h">
-      <Filter>Header Files\Math</Filter>
+    <ClInclude Include="Source\Events\TimerEvent.h">
+      <Filter>Header Files\Events</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Math\Size-inl.h">
-      <Filter>Header Files\Math</Filter>
+    <ClInclude Include="Source\Events\TimerEvent-inl.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Jobs\CreateActorFromFileJob.h">
+      <Filter>Header Files\Jobs</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Jobs\CreateActorFromFileJob-inl.h">
+      <Filter>Header Files\Jobs</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Jobs\CreateActorFromFileAtPositionJob.h">
+      <Filter>Header Files\Jobs</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Jobs\CreateActorFromFileAtPositionJob-inl.h">
+      <Filter>Header Files\Jobs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -347,6 +407,12 @@
     <ClCompile Include="Source\Common\Private\Engine.cpp">
       <Filter>Source Files\Common</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Math\Private\Rect.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Math\Private\Size.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Time\Private\TimerUtil.cpp">
       <Filter>Source Files\Time</Filter>
     </ClCompile>
@@ -362,35 +428,35 @@
     <ClCompile Include="Source\Physics\Private\PhysicsObject.cpp">
       <Filter>Source Files\Physics</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GameObject\Private\Actor.cpp">
-      <Filter>Source Files\GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GameObject\Private\ActorCreator.cpp">
-      <Filter>Source Files\GameObject</Filter>
+    <ClCompile Include="Source\Data\Private\StringPool.cpp">
+      <Filter>Source Files\Data</Filter>
     </ClCompile>
     <ClCompile Include="Source\Data\Private\HashedString.cpp">
       <Filter>Source Files\Data</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Data\Private\PooledString.cpp">
-      <Filter>Source Files\Data</Filter>
+    <ClCompile Include="Source\Renderer\Private\Renderer.cpp">
+      <Filter>Source Files\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Data\Private\StringPool.cpp">
+    <ClCompile Include="Source\Renderer\Private\RenderableObject.cpp">
+      <Filter>Source Files\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Util\Private\FileUtils.cpp">
+      <Filter>Source Files\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameObject\Private\Actor.cpp">
+      <Filter>Source Files\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Data\Private\PooledString.cpp">
       <Filter>Source Files\Data</Filter>
     </ClCompile>
     <ClCompile Include="Source\Input\Private\Input.cpp">
       <Filter>Source Files\Input</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Input\Private\KeyboardEvent.cpp">
-      <Filter>Source Files\Input</Filter>
+    <ClCompile Include="Source\GameObject\Private\ActorCreator.cpp">
+      <Filter>Source Files\GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Input\Private\KeyboardEventDispatcher.cpp">
-      <Filter>Source Files\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Jobs\Private\CreateActorCacheFileDataJob.cpp">
-      <Filter>Source Files\Jobs</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Jobs\Private\CreateActorDeleteFileDataJob.cpp">
-      <Filter>Source Files\Jobs</Filter>
+    <ClCompile Include="Source\Util\Private\LuaHelper.cpp">
+      <Filter>Source Files\Util</Filter>
     </ClCompile>
     <ClCompile Include="Source\Jobs\Private\FileLoadJob.cpp">
       <Filter>Source Files\Jobs</Filter>
@@ -407,23 +473,50 @@
     <ClCompile Include="Source\Memory\Private\AllocationCounter.cpp">
       <Filter>Source Files\Memory</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Renderer\Private\RenderableObject.cpp">
-      <Filter>Source Files\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Renderer\Private\Renderer.cpp">
-      <Filter>Source Files\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Util\Private\FileUtils.cpp">
-      <Filter>Source Files\Util</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Util\Private\LuaHelper.cpp">
-      <Filter>Source Files\Util</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Math\Private\Rect.cpp">
+    <ClCompile Include="Source\Math\Private\Vec4D.cpp">
       <Filter>Source Files\Math</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Math\Private\Size.cpp">
+    <ClCompile Include="Source\Math\Private\MathUtil.cpp">
       <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Math\Private\Mat44.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Math\Private\AABB.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Private\Collider.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Physics\Private\DebugDraw.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Events\Private\EventDispatcher.cpp">
+      <Filter>Source Files\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Events\Private\KeyboardEvent.cpp">
+      <Filter>Source Files\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Math\Private\Vec3D-SSE.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Math\Private\Vec4D-SSE.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Util\Private\Profiler.cpp">
+      <Filter>Source Files\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Math\Private\Mat44-SSE.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Events\Private\TimerEvent.cpp">
+      <Filter>Source Files\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Jobs\Private\CreateActorFromFileJob.cpp">
+      <Filter>Source Files\Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Jobs\Private\CreateActorFromFileAtPositionJob.cpp">
+      <Filter>Source Files\Jobs</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -17,7 +17,7 @@ class Actor
 {
 public:
     inline static engine::memory::SharedPointer<Actor> Create();
-    inline static engine::memory::SharedPointer<Actor> Create(const engine::data::PooledString& i_name, const engine::data::HashedString& i_type);
+    inline static engine::memory::SharedPointer<Actor> Create(uint32_t i_id, const engine::data::PooledString& i_name, const engine::data::HashedString& i_type);
     inline static engine::memory::SharedPointer<Actor> Create(const engine::memory::SharedPointer<GameObject>& i_game_object);
     inline static engine::memory::SharedPointer<Actor> Create(const engine::memory::SharedPointer<GameObject>& i_game_object, const engine::memory::WeakPointer<engine::physics::PhysicsObject>& i_physics_object);
     inline static engine::memory::SharedPointer<Actor> Create(const engine::memory::SharedPointer<GameObject>& i_game_object, const engine::memory::WeakPointer<engine::render::RenderableObject>& i_renderable_object);
@@ -31,7 +31,7 @@ public:
     Actor& operator=(Actor&& i_copy) = delete;
 
     // accessors and mutators
-    inline void SetID(uint16_t i_id);
+    inline void SetID(uint32_t i_id);
     inline uint32_t GetID() const;
 
     inline void SetName(const engine::data::PooledString& i_name);
@@ -49,9 +49,15 @@ public:
     inline void SetRenderableObject(const engine::memory::WeakPointer<engine::render::RenderableObject>& i_renderable_object);
     inline const engine::memory::WeakPointer<engine::render::RenderableObject>& GetRenderableObject() const;
 
+    inline void SetHasDied(bool i_has_died);
+    inline bool GetHasDied() const;
+
+    inline void SetIsEnabled(bool i_is_enabled);
+    inline bool GetIsEnabled() const;
+
 protected:
     Actor();
-    Actor(const engine::data::PooledString& i_name, const engine::data::HashedString& i_type);
+    Actor(uint32_t i_id, const engine::data::PooledString& i_name, const engine::data::HashedString& i_type);
     Actor(const engine::memory::SharedPointer<GameObject>& i_game_object);
     Actor(const engine::memory::SharedPointer<GameObject>& i_game_object, const engine::memory::WeakPointer<engine::physics::PhysicsObject>& i_physics_object);
     Actor(const engine::memory::SharedPointer<GameObject>& i_game_object, const engine::memory::WeakPointer<engine::render::RenderableObject>& i_renderable_object);
@@ -64,6 +70,8 @@ private:
     engine::memory::SharedPointer<GameObject>                                   game_object_;
     engine::memory::WeakPointer<engine::physics::PhysicsObject>                 physics_object_;
     engine::memory::WeakPointer<engine::render::RenderableObject>               renderable_object_;
+    bool                                                                        has_died_;
+    bool                                                                        is_enabled_;
 
 }; // class Actor
 

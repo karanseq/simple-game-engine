@@ -14,18 +14,20 @@
 namespace engine {
 namespace gameobject {
 
+// static member initialization
+std::mutex ActorCreator::actor_count_mutex_;
+uint32_t ActorCreator::actor_count_ = 0;
+
 bool ActorCreator::CreateActorFromFile(const engine::data::PooledString& i_file_name, engine::memory::SharedPointer<Actor>& o_actor)
 {
     // validate input
     ASSERT(i_file_name.GetLength() > 0);
 
     // read the lua file
-    engine::util::FileUtils::FileData file_data = engine::util::FileUtils::Get()->ReadFile(i_file_name, false);
+    const engine::util::FileUtils::FileData file_data = engine::util::FileUtils::Get()->ReadFile(i_file_name);
     ASSERT(file_data.file_contents && file_data.file_size > 0);
 
     CreateActorFromFileData(file_data, o_actor);
-
-    delete[] file_data.file_contents;
 
     return true;
 }
@@ -36,12 +38,10 @@ bool ActorCreator::CreateActorsFromFile(const engine::data::PooledString& i_file
     ASSERT(i_file_name.GetLength() > 0);
 
     // read the lua file
-    engine::util::FileUtils::FileData file_data = engine::util::FileUtils::Get()->ReadFile(i_file_name, false);
+    engine::util::FileUtils::FileData file_data = engine::util::FileUtils::Get()->ReadFile(i_file_name);
     ASSERT(file_data.file_contents && file_data.file_size > 0);
 
     CreateActorsFromFileData(file_data, o_actors);
-
-    delete[] file_data.file_contents;
 
     return true;
 }
@@ -153,6 +153,9 @@ bool ActorCreator::CreateActor(lua_State* i_lua_state, engine::memory::SharedPoi
     // validate input
     ASSERT(i_lua_state);
 
+    // get the actor's id
+    const uint32_t id = GetNewActorID();
+
     // get the actor's name
     const auto name = engine::util::LuaHelper::CreatePooledString(i_lua_state, "name");
 
@@ -160,16 +163,16 @@ bool ActorCreator::CreateActor(lua_State* i_lua_state, engine::memory::SharedPoi
     const auto type = engine::data::HashedString(engine::util::LuaHelper::CreatePooledString(i_lua_state, "type"));
 
     // create the actor
-    o_actor = engine::gameobject::Actor::Create(name, type);
+    o_actor = engine::gameobject::Actor::Create(id, name, type);
 
     // get the actor's bounding box
-    const auto aabb = engine::util::LuaHelper::CreateRect(i_lua_state, "bounding_box");
+    const auto aabb = engine::util::LuaHelper::CreateAABB(i_lua_state, "bounding_box");
 
     // get the actor's transform
     const auto transform = engine::util::LuaHelper::CreateTransform(i_lua_state, "transform");
 
     // create the game object
-    const auto game_object = engine::gameobject::GameObject::Create(aabb, transform);
+    const auto game_object = engine::gameobject::GameObject::Create(aabb, transform, o_actor);
     o_actor->SetGameObject(game_object);
 
     // create a physics object
@@ -200,15 +203,22 @@ bool ActorCreator::CreatePhysicsObject(lua_State* i_lua_state, const engine::mem
 
     bool has_physics = false;
     float physics_mass = 0.0f, physics_drag = 0.0f;
+    static engine::data::HashedString types[3] = { "static", "kinematic", "dynamic" };
 
     if (type == LUA_TTABLE)
     {
         has_physics = true;
 
+        const engine::data::HashedString type_string = engine::data::HashedString(engine::util::LuaHelper::CreatePooledString(i_lua_state, "type"));
+        engine::physics::PhysicsObjectType type = static_cast<engine::physics::PhysicsObjectType>(type_string == types[0] ? 0 : (type_string == types[1] ? 1 : (type_string == types[2] ? 2 : 0)));
+
         float mass = engine::util::LuaHelper::CreateFloat(i_lua_state, "mass");
         float drag = engine::util::LuaHelper::CreateFloat(i_lua_state, "drag");
 
-        o_physics_object = engine::physics::Physics::Get()->CreatePhysicsObject(i_game_object, mass, drag);
+        bool is_collidable = engine::util::LuaHelper::CreateBool(i_lua_state, "collide");
+        uint16_t collision_filter = 1 << (engine::util::LuaHelper::CreateInt(i_lua_state, "collision_filter") % 16);
+
+        o_physics_object = engine::physics::Physics::Get()->CreatePhysicsObject(i_game_object, mass, drag, type, collision_filter, is_collidable);
     }
 
     // pop the physics settings value

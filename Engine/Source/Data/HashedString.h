@@ -17,10 +17,16 @@ public:
     HashedString(const PooledString& i_string);
     
     inline HashedString& operator=(const HashedString& i_copy);
+    
     inline bool operator==(const HashedString& i_other) const;
+    inline bool operator==(const char* i_other) const;
+
     inline bool operator!=(const HashedString& i_other) const;
+    inline bool operator!=(const char* i_other) const;
+
     inline bool operator<(const HashedString& i_other) const;
     inline bool operator>(const HashedString& i_other) const;
+    
     inline unsigned int GetHash() const;
 
     static inline unsigned int Hash(const char* i_string);

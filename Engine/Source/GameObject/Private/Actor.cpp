@@ -7,47 +7,65 @@
 namespace engine {
 namespace gameobject {
 
-Actor::Actor() : name_(""),
+Actor::Actor() : id_(0),
+    name_(""),
     type_(""),
     game_object_(nullptr),
     physics_object_(nullptr),
-    renderable_object_(nullptr)
+    renderable_object_(nullptr),
+    has_died_(false),
+    is_enabled_(true)
 {}
 
-Actor::Actor(const engine::data::PooledString& i_name, const engine::data::HashedString& i_type) : name_(i_name),
+Actor::Actor(uint32_t i_id, const engine::data::PooledString& i_name, const engine::data::HashedString& i_type) : id_(i_id),
+    name_(i_name),
     type_(i_type),
     game_object_(nullptr),
     physics_object_(nullptr),
-    renderable_object_(nullptr)
+    renderable_object_(nullptr),
+    has_died_(false),
+    is_enabled_(true)
 {}
 
-Actor::Actor(const engine::memory::SharedPointer<GameObject>& i_game_object) : name_(),
-    type_(),
+Actor::Actor(const engine::memory::SharedPointer<GameObject>& i_game_object) : id_(0),
+    name_(""),
+    type_(""),
     game_object_(i_game_object),
     physics_object_(nullptr),
-    renderable_object_(nullptr)
+    renderable_object_(nullptr),
+    has_died_(false),
+    is_enabled_(true)
 {}
 
-Actor::Actor(const engine::memory::SharedPointer<GameObject>& i_game_object, const engine::memory::WeakPointer<engine::physics::PhysicsObject>& i_physics_object) : name_(),
-    type_(),
+Actor::Actor(const engine::memory::SharedPointer<GameObject>& i_game_object, const engine::memory::WeakPointer<engine::physics::PhysicsObject>& i_physics_object) : id_(0),
+    name_(""),
+    type_(""),
     game_object_(i_game_object),
     physics_object_(i_physics_object),
-    renderable_object_(nullptr)
+    renderable_object_(nullptr),
+    has_died_(false),
+    is_enabled_(true)
 {}
 
-Actor::Actor(const engine::memory::SharedPointer<GameObject>& i_game_object, const engine::memory::WeakPointer<engine::render::RenderableObject>& i_renderable_object) : name_(),
-    type_(),
+Actor::Actor(const engine::memory::SharedPointer<GameObject>& i_game_object, const engine::memory::WeakPointer<engine::render::RenderableObject>& i_renderable_object) : id_(0),
+    name_(""),
+    type_(""),
     game_object_(i_game_object),
     physics_object_(nullptr),
-    renderable_object_(i_renderable_object)
+    renderable_object_(i_renderable_object),
+    has_died_(false),
+    is_enabled_(true)
 {}
 
 
-Actor::Actor(const engine::memory::SharedPointer<GameObject>& i_game_object, const engine::memory::WeakPointer<engine::physics::PhysicsObject>& i_physics_object, const engine::memory::WeakPointer<engine::render::RenderableObject>& i_renderable_object) : name_(),
-    type_(),
+Actor::Actor(const engine::memory::SharedPointer<GameObject>& i_game_object, const engine::memory::WeakPointer<engine::physics::PhysicsObject>& i_physics_object, const engine::memory::WeakPointer<engine::render::RenderableObject>& i_renderable_object) : id_(0),
+    name_(""),
+    type_(""),
     game_object_(i_game_object),
     physics_object_(i_physics_object),
-    renderable_object_(i_renderable_object)
+    renderable_object_(i_renderable_object),
+    has_died_(false),
+    is_enabled_(true)
 {}
 
 Actor::~Actor()

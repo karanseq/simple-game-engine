@@ -11,6 +11,11 @@ double TimerUtil::pc_frequency_ = 0;
 double TimerUtil::last_frame_start_tick_ = 0;
 float TimerUtil::last_frame_time_ms_ = 0.0f;
 
+double TimerUtil::GetTick()
+{
+    return TimerUtil::last_frame_start_tick_;
+}
+
 float TimerUtil::GetLastFrameTime_ms()
 {
 #if defined(CONSTANT_FRAMETIME)

@@ -3,6 +3,10 @@
 // library includes
 #include <cmath>
 
+// engine includes
+#include "Assert\Assert.h"
+#include "Math\MathUtil.h"
+
 namespace engine {
 namespace math {
 
@@ -13,7 +17,9 @@ namespace math {
 
     Vec2D::Vec2D(float i_x, float i_y) : x_(i_x),
         y_(i_y)
-    {}
+    {
+        ASSERT(!IsNaN(x_) && !IsNaN(y_));
+    }
 
     Vec2D::Vec2D(const Vec2D& i_copy) : x_(i_copy.x_),
         y_(i_copy.y_)
@@ -28,8 +34,8 @@ namespace math {
     {
         float length_squared = x_ * x_ + y_ * y_;
 
-        // return if already normalized
-        if (FuzzyEquals(length_squared, 1.0f))
+        // return if already normalized OR if length is zero
+        if (FuzzyEquals(length_squared, 1.0f) || FuzzyEquals(length_squared, 0.0f))
         {
             return;
         }

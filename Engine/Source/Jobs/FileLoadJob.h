@@ -15,7 +15,7 @@ namespace jobs {
 class FileLoadJob : public InterfaceJob
 {
 public:
-    FileLoadJob(const engine::data::PooledString& i_file_name, const std::function<void(const engine::util::FileUtils::FileData)>& i_callback);
+    FileLoadJob(const engine::data::PooledString& i_file_name, const std::function<void(const engine::util::FileUtils::FileData)>& i_callback, bool i_does_cache_file = true);
     ~FileLoadJob();
 
     // implement InterfaceJob
@@ -28,6 +28,9 @@ public:
     inline const std::function<void(const engine::util::FileUtils::FileData)>& GetCallback() const;
     inline void SetCallback(const std::function<void(const engine::util::FileUtils::FileData)>& i_callback);
 
+    inline bool GetDoesCacheFile() const;
+    inline void SetDoesCacheFile(bool i_does_cache_file);
+
 private:
     FileLoadJob(const FileLoadJob&) = delete;
     FileLoadJob(FileLoadJob&&) = delete;
@@ -35,8 +38,9 @@ private:
     FileLoadJob& operator=(const FileLoadJob&) = delete;
     FileLoadJob& operator=(FileLoadJob&&) = delete;
 
-    engine::data::PooledString                                                  file_name_;
     std::function<void(const engine::util::FileUtils::FileData)>                callback_;
+    engine::data::PooledString                                                  file_name_;
+    bool                                                                        does_cache_file_;
 };
 
 } // namespace jobs

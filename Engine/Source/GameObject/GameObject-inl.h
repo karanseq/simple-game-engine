@@ -3,29 +3,20 @@
 namespace engine {
 namespace gameobject {
 
-inline engine::memory::SharedPointer<GameObject> GameObject::Create(const engine::math::Rect& i_aabb, const engine::math::Transform& i_transform)
+inline engine::memory::SharedPointer<GameObject> GameObject::Create(const engine::math::AABB& i_aabb, const engine::math::Transform& i_transform, const engine::memory::WeakPointer<Actor>& i_owner)
 {
-    return engine::memory::SharedPointer<GameObject>(new GameObject(i_aabb, i_transform));
+    return engine::memory::SharedPointer<GameObject>(new GameObject(i_aabb, i_transform, i_owner));
 }
 
 inline GameObject& GameObject::operator=(const GameObject& i_game_object)
 {
     if (this != &i_game_object)
     {
-        aabb_ = i_game_object.aabb_;
         transform_ = i_game_object.transform_;
+        aabb_ = i_game_object.aabb_;
+        owner_ = i_game_object.owner_;
     }
     return *this;
-}
-
-inline const engine::math::Rect& GameObject::GetAABB() const
-{
-    return aabb_;
-}
-
-inline void GameObject::SetAABB(const engine::math::Rect& i_aabb)
-{
-    aabb_ = i_aabb;
 }
 
 inline const engine::math::Transform& GameObject::GetTransform() const
@@ -66,6 +57,26 @@ inline const engine::math::Vec3D& GameObject::GetScale() const
 inline void GameObject::SetScale(const engine::math::Vec3D& i_scale)
 {
     transform_.SetScale(i_scale);
+}
+
+inline const engine::math::AABB& GameObject::GetAABB() const
+{
+    return aabb_;
+}
+
+inline void GameObject::SetAABB(const engine::math::AABB& i_aabb)
+{
+    aabb_ = i_aabb;
+}
+
+inline const engine::memory::WeakPointer<Actor>& GameObject::GetOwner() const
+{
+    return owner_;
+}
+
+inline void GameObject::SetOwner(const engine::memory::WeakPointer<Actor>& i_owner)
+{
+    owner_ = i_owner;
 }
 
 } // namespace gameobject

@@ -8,9 +8,9 @@ inline engine::memory::SharedPointer<Actor> Actor::Create()
     return engine::memory::SharedPointer<Actor>(new Actor());
 }
 
-inline engine::memory::SharedPointer<Actor> Actor::Create(const engine::data::PooledString& i_name, const engine::data::HashedString& i_type)
+inline engine::memory::SharedPointer<Actor> Actor::Create(uint32_t i_id, const engine::data::PooledString& i_name, const engine::data::HashedString& i_type)
 {
-    return engine::memory::SharedPointer<Actor>(new Actor(i_name, i_type));
+    return engine::memory::SharedPointer<Actor>(new Actor(i_id, i_name, i_type));
 }
 
 inline engine::memory::SharedPointer<Actor> Actor::Create(const engine::memory::SharedPointer<GameObject>& i_game_object)
@@ -33,7 +33,7 @@ inline engine::memory::SharedPointer<Actor> Actor::Create(const engine::memory::
     return engine::memory::SharedPointer<Actor>(new Actor(i_game_object, i_physics_object, i_renderable_object));
 }
 
-inline void Actor::SetID(uint16_t i_id)
+inline void Actor::SetID(uint32_t i_id)
 {
     id_ = i_id;
 }
@@ -91,6 +91,39 @@ inline void Actor::SetRenderableObject(const engine::memory::WeakPointer<engine:
 inline const engine::memory::WeakPointer<engine::render::RenderableObject>& Actor::GetRenderableObject() const
 {
     return renderable_object_;
+}
+
+inline void Actor::SetHasDied(bool i_has_died)
+{
+    has_died_ = i_has_died;
+}
+
+inline bool Actor::GetHasDied() const
+{
+    return has_died_;
+}
+
+inline void Actor::SetIsEnabled(bool i_is_enabled)
+{
+    if (is_enabled_ != i_is_enabled)
+    {
+        is_enabled_ = i_is_enabled;
+
+        if (physics_object_)
+        {
+            physics_object_.Lock()->SetIsActive(is_enabled_);
+        }
+
+        if (renderable_object_)
+        {
+            renderable_object_.Lock()->SetIsVisible(is_enabled_);
+        }
+    }
+}
+
+inline bool Actor::GetIsEnabled() const
+{
+    return is_enabled_;
 }
 
 } // namespace gameobject

@@ -6,6 +6,11 @@
 namespace engine {
 namespace time {
 
+double TimerUtil::CalculateTick()
+{
+    return GetCounter();
+}
+
 float TimerUtil::CalculateLastFrameTime_ms()
 {
     // grab the CPU tick counter

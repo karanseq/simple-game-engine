@@ -29,5 +29,15 @@ inline void FileLoadJob::SetCallback(const std::function<void(const engine::util
     callback_ = i_callback;
 }
 
+inline bool FileLoadJob::GetDoesCacheFile() const
+{
+    return does_cache_file_;
+}
+
+inline void FileLoadJob::SetDoesCacheFile(bool i_does_cache_file)
+{
+    does_cache_file_ = i_does_cache_file;
+}
+
 } // namespace jobs
 } // namespace engine

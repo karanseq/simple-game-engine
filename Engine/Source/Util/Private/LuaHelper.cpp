@@ -155,6 +155,25 @@ int LuaHelper::CreateInt(lua_State* i_lua_state, const char* i_key_name)
     return return_int;
 }
 
+bool LuaHelper::CreateBool(lua_State* i_lua_state, const char* i_key_name)
+{
+    // validate inputs
+    ASSERT(i_lua_state);
+    ASSERT(i_key_name);
+
+    int type = LUA_TNIL;
+
+    lua_pushstring(i_lua_state, i_key_name);
+    type = lua_gettable(i_lua_state, -2);
+    ASSERT(type == LUA_TNIL || type == LUA_TBOOLEAN);
+
+    bool return_bool = lua_toboolean(i_lua_state, -1) == 1;
+
+    lua_pop(i_lua_state, 1);
+
+    return return_bool;
+}
+
 engine::math::Vec3D LuaHelper::CreateVec3D(lua_State* i_lua_state, const char* i_key_name)
 {
     // validate inputs
@@ -182,6 +201,30 @@ engine::math::Vec3D LuaHelper::CreateVec3D(lua_State* i_lua_state, const char* i
     lua_pop(i_lua_state, 1);
 
     return return_vec;
+}
+
+engine::math::AABB LuaHelper::CreateAABB(lua_State* i_lua_state, const char* i_key_name)
+{
+    // validate inputs
+    ASSERT(i_lua_state);
+    ASSERT(i_key_name);
+
+    int type = LUA_TNIL;
+
+    // 1. Push the key
+    lua_pushstring(i_lua_state, i_key_name);
+
+    // 2. Get the associated value
+    type = lua_gettable(i_lua_state, -2);
+    ASSERT(type == LUA_TTABLE);
+
+    float floats[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+    CreateFloatArray(i_lua_state, -1, floats, 4);
+
+    // 3. Remove the value from the stack now that we're done with it
+    lua_pop(i_lua_state, 1);
+
+    return engine::math::AABB{ engine::math::Vec3D(floats[0], floats[1]), engine::math::Vec3D(floats[2], floats[3]) };
 }
 
 engine::math::Rect LuaHelper::CreateRect(lua_State* i_lua_state, const char* i_key_name)
@@ -223,9 +266,15 @@ engine::math::Transform LuaHelper::CreateTransform(lua_State* i_lua_state, const
     type = lua_gettable(i_lua_state, -2);
     ASSERT(type == LUA_TTABLE);
 
-    const auto position = CreateVec3D(i_lua_state, "position");
-    const auto rotation = CreateVec3D(i_lua_state, "rotation");
-    const auto scale = CreateVec3D(i_lua_state, "scale");
+    const engine::math::Vec3D position = CreateVec3D(i_lua_state, "position");
+
+    engine::math::Vec3D rotation = CreateVec3D(i_lua_state, "rotation");
+
+    rotation.x(engine::math::DegreesToRadians(rotation.x()));
+    rotation.y(engine::math::DegreesToRadians(rotation.y()));
+    rotation.z(engine::math::DegreesToRadians(rotation.z()));
+
+    const engine::math::Vec3D scale = CreateVec3D(i_lua_state, "scale");
 
     // 3. Remove the value from the stack now that we're done with it
     lua_pop(i_lua_state, 1);

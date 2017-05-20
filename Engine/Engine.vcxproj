@@ -5,6 +5,14 @@
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Profile|Win32">
+      <Configuration>Profile</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Profile|x64">
+      <Configuration>Profile</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
@@ -38,6 +46,13 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
@@ -45,6 +60,13 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Profile|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
@@ -62,10 +84,16 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Profile|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
@@ -77,11 +105,19 @@
     <OutDir>$(ProjectDir)Output\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(ProjectDir).intermediates\$(Configuration)\$(Platform)\</IntDir>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'">
+    <OutDir>$(ProjectDir)Output\$(Configuration)\$(Platform)\</OutDir>
+    <IntDir>$(ProjectDir).intermediates\$(Configuration)\$(Platform)\</IntDir>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(ProjectDir)Output\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(ProjectDir).intermediates\$(Configuration)\$(Platform)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(ProjectDir)Output\$(Configuration)\$(Platform)\</OutDir>
+    <IntDir>$(ProjectDir).intermediates\$(Configuration)\$(Platform)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">
     <OutDir>$(ProjectDir)Output\$(Configuration)\$(Platform)\</OutDir>
     <IntDir>$(ProjectDir).intermediates\$(Configuration)\$(Platform)\</IntDir>
   </PropertyGroup>
@@ -91,7 +127,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;BUILD_DEBUG;VERBOSITY_LEVEL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;BUILD_DEBUG;VERBOSITY_LEVEL=0;ENABLE_FAST_MATH;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(ProjectDir)Source;$(SolutionDir)External\GLib\;$(SolutionDir)External\Lua\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -104,8 +140,8 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;_LIB;BUILD_DEBUG;VERBOSITY_LEVEL=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)External\Lua\;$(SolutionDir)External\GLib\;$(ProjectDir)Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;_LIB;BUILD_DEBUG;VERBOSITY_LEVEL=0;ENABLE_FAST_MATH;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source;$(SolutionDir)External\GLib\;$(SolutionDir)External\Lua\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -119,8 +155,25 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;VERBOSITY_LEVEL=1;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)External\Lua\;$(SolutionDir)External\GLib\;$(ProjectDir)Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;VERBOSITY_LEVEL=1;ENABLE_FAST_MATH;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source;$(SolutionDir)External\GLib\;$(SolutionDir)External\Lua\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Profile|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;VERBOSITY_LEVEL=1;ENABLE_PROFILING;ENABLE_FAST_MATH;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source;$(SolutionDir)External\GLib\;$(SolutionDir)External\Lua\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -136,8 +189,25 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>NDEBUG;_LIB;VERBOSITY_LEVEL=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)External\Lua\;$(SolutionDir)External\GLib\;$(ProjectDir)Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;_LIB;VERBOSITY_LEVEL=1;ENABLE_FAST_MATH;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source;$(SolutionDir)External\GLib\;$(SolutionDir)External\Lua\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Profile|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>NDEBUG;_LIB;ENABLE_PROFILING;VERBOSITY_LEVEL=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source;$(SolutionDir)External\GLib\;$(SolutionDir)External\Lua\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -160,20 +230,22 @@
     <ClInclude Include="Source\Data\PooledString.h" />
     <ClInclude Include="Source\Data\StringPool-inl.h" />
     <ClInclude Include="Source\Data\StringPool.h" />
+    <ClInclude Include="Source\Events\EventDispatcher.h" />
+    <ClInclude Include="Source\Events\KeyboardEvent-inl.h" />
+    <ClInclude Include="Source\Events\KeyboardEvent.h" />
+    <ClInclude Include="Source\Events\TimerEvent-inl.h" />
+    <ClInclude Include="Source\Events\TimerEvent.h" />
     <ClInclude Include="Source\GameObject\Actor-inl.h" />
     <ClInclude Include="Source\GameObject\Actor.h" />
     <ClInclude Include="Source\GameObject\ActorCreator.h" />
     <ClInclude Include="Source\GameObject\GameObject-inl.h" />
     <ClInclude Include="Source\GameObject\GameObject.h" />
+    <ClInclude Include="Source\GameObject\InterfaceGameObjectController.h" />
     <ClInclude Include="Source\Input\Input.h" />
-    <ClInclude Include="Source\Input\KeyboardEvent-inl.h" />
-    <ClInclude Include="Source\Input\KeyboardEvent.h" />
-    <ClInclude Include="Source\Input\KeyboardEventDispatcher-inl.h" />
-    <ClInclude Include="Source\Input\KeyboardEventDispatcher.h" />
-    <ClInclude Include="Source\Jobs\CreateActorCacheFileDataJob-inl.h" />
-    <ClInclude Include="Source\Jobs\CreateActorCacheFileDataJob.h" />
-    <ClInclude Include="Source\Jobs\CreateActorDeleteFileDataJob-inl.h" />
-    <ClInclude Include="Source\Jobs\CreateActorDeleteFileDataJob.h" />
+    <ClInclude Include="Source\Jobs\CreateActorFromFileAtPositionJob-inl.h" />
+    <ClInclude Include="Source\Jobs\CreateActorFromFileAtPositionJob.h" />
+    <ClInclude Include="Source\Jobs\CreateActorFromFileJob-inl.h" />
+    <ClInclude Include="Source\Jobs\CreateActorFromFileJob.h" />
     <ClInclude Include="Source\Jobs\FileLoadJob-inl.h" />
     <ClInclude Include="Source\Jobs\FileLoadJob.h" />
     <ClInclude Include="Source\Jobs\InterfaceJob.h" />
@@ -182,6 +254,11 @@
     <ClInclude Include="Source\Jobs\JobSystem.h" />
     <ClInclude Include="Source\Jobs\Worker.h" />
     <ClInclude Include="Source\Logger\Logger.h" />
+    <ClInclude Include="Source\Math\AABB.h" />
+    <ClInclude Include="Source\Math\Mat44-inl.h" />
+    <ClInclude Include="Source\Math\Mat44-SSE-inl.h" />
+    <ClInclude Include="Source\Math\Mat44-SSE.h" />
+    <ClInclude Include="Source\Math\Mat44.h" />
     <ClInclude Include="Source\Math\MathUtil.h" />
     <ClInclude Include="Source\Math\Rect-inl.h" />
     <ClInclude Include="Source\Math\Rect.h" />
@@ -192,7 +269,13 @@
     <ClInclude Include="Source\Math\Vec2D-inl.h" />
     <ClInclude Include="Source\Math\Vec2D.h" />
     <ClInclude Include="Source\Math\Vec3D-inl.h" />
+    <ClInclude Include="Source\Math\Vec3D-SSE-inl.h" />
+    <ClInclude Include="Source\Math\Vec3D-SSE.h" />
     <ClInclude Include="Source\Math\Vec3D.h" />
+    <ClInclude Include="Source\Math\Vec4D-inl.h" />
+    <ClInclude Include="Source\Math\Vec4D-SSE-inl.h" />
+    <ClInclude Include="Source\Math\Vec4D-SSE.h" />
+    <ClInclude Include="Source\Math\Vec4D.h" />
     <ClInclude Include="Source\Memory\AllocationCounter-inl.h" />
     <ClInclude Include="Source\Memory\AllocationCounter.h" />
     <ClInclude Include="Source\Memory\AllocatorUtil.h" />
@@ -208,6 +291,10 @@
     <ClInclude Include="Source\Memory\UniquePointer.h" />
     <ClInclude Include="Source\Memory\WeakPointer-inl.h" />
     <ClInclude Include="Source\Memory\WeakPointer.h" />
+    <ClInclude Include="Source\Physics\Collider-inl.h" />
+    <ClInclude Include="Source\Physics\Collider.h" />
+    <ClInclude Include="Source\Physics\DebugDraw-inl.h" />
+    <ClInclude Include="Source\Physics\DebugDraw.h" />
     <ClInclude Include="Source\Physics\Physics-inl.h" />
     <ClInclude Include="Source\Physics\Physics.h" />
     <ClInclude Include="Source\Physics\PhysicsObject-inl.h" />
@@ -223,6 +310,7 @@
     <ClInclude Include="Source\Util\FileUtils-inl.h" />
     <ClInclude Include="Source\Util\FileUtils.h" />
     <ClInclude Include="Source\Util\LuaHelper.h" />
+    <ClInclude Include="Source\Util\Profiler.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Common\Private\Engine.cpp" />
@@ -230,28 +318,38 @@
     <ClCompile Include="Source\Data\Private\HashedString.cpp" />
     <ClCompile Include="Source\Data\Private\PooledString.cpp" />
     <ClCompile Include="Source\Data\Private\StringPool.cpp" />
+    <ClCompile Include="Source\Events\Private\EventDispatcher.cpp" />
+    <ClCompile Include="Source\Events\Private\KeyboardEvent.cpp" />
+    <ClCompile Include="Source\Events\Private\TimerEvent.cpp" />
     <ClCompile Include="Source\GameObject\Private\Actor.cpp" />
     <ClCompile Include="Source\GameObject\Private\ActorCreator.cpp" />
     <ClCompile Include="Source\Input\Private\Input.cpp" />
-    <ClCompile Include="Source\Input\Private\KeyboardEvent.cpp" />
-    <ClCompile Include="Source\Input\Private\KeyboardEventDispatcher.cpp" />
-    <ClCompile Include="Source\Jobs\Private\CreateActorCacheFileDataJob.cpp" />
-    <ClCompile Include="Source\Jobs\Private\CreateActorDeleteFileDataJob.cpp" />
+    <ClCompile Include="Source\Jobs\Private\CreateActorFromFileAtPositionJob.cpp" />
+    <ClCompile Include="Source\Jobs\Private\CreateActorFromFileJob.cpp" />
     <ClCompile Include="Source\Jobs\Private\FileLoadJob.cpp" />
     <ClCompile Include="Source\Jobs\Private\JobQueue.cpp" />
     <ClCompile Include="Source\Jobs\Private\JobSystem.cpp" />
     <ClCompile Include="Source\Jobs\Private\Worker.cpp" />
     <ClCompile Include="Source\Logger\Private\Logger.win32.cpp" />
+    <ClCompile Include="Source\Math\Private\AABB.cpp" />
+    <ClCompile Include="Source\Math\Private\Mat44-SSE.cpp" />
+    <ClCompile Include="Source\Math\Private\Mat44.cpp" />
+    <ClCompile Include="Source\Math\Private\MathUtil.cpp" />
     <ClCompile Include="Source\Math\Private\Rect.cpp" />
     <ClCompile Include="Source\Math\Private\Size.cpp" />
     <ClCompile Include="Source\Math\Private\Transform.cpp" />
     <ClCompile Include="Source\Math\Private\Vec2D.cpp" />
+    <ClCompile Include="Source\Math\Private\Vec3D-SSE.cpp" />
     <ClCompile Include="Source\Math\Private\Vec3D.cpp" />
+    <ClCompile Include="Source\Math\Private\Vec4D-SSE.cpp" />
+    <ClCompile Include="Source\Math\Private\Vec4D.cpp" />
     <ClCompile Include="Source\Memory\Private\AllocationCounter.cpp" />
     <ClCompile Include="Source\Memory\Private\AllocatorUtil.cpp" />
     <ClCompile Include="Source\Memory\Private\BlockAllocator.cpp" />
     <ClCompile Include="Source\Memory\Private\AllocatorOverrides.cpp" />
     <ClCompile Include="Source\Memory\Private\FixedSizeAllocator.cpp" />
+    <ClCompile Include="Source\Physics\Private\Collider.cpp" />
+    <ClCompile Include="Source\Physics\Private\DebugDraw.cpp" />
     <ClCompile Include="Source\Physics\Private\Physics.cpp" />
     <ClCompile Include="Source\Physics\Private\PhysicsObject.cpp" />
     <ClCompile Include="Source\Renderer\Private\RenderableObject.cpp" />
@@ -261,6 +359,7 @@
     <ClCompile Include="Source\Time\Private\Updater.cpp" />
     <ClCompile Include="Source\Util\Private\FileUtils.cpp" />
     <ClCompile Include="Source\Util\Private\LuaHelper.cpp" />
+    <ClCompile Include="Source\Util\Private\Profiler.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
