@@ -97,7 +97,6 @@ void TestJobSystem()
     LOG("--------------------------------------------");
 
     job_system->Shutdown();
-    engine::jobs::JobSystem::Destroy();
 
     LOG("--------------------------------------------");
     LOG("JOB SYSTEM SHUTDOWN COMPLETE\nTOTAL %zu JOBS CREATED", total_jobs);
